@@ -1,0 +1,20 @@
+.signature{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+ /*   font-family: Inter; */
+font-style: normal;
+font-weight: 900;
+font-size: 24px;
+line-height: 29px;
+text-overflow: ellipsis;
+white-space: nowrap;
+overflow: hidden;
+margin-top: 25px;
+padding-left: 21px;
+padding-right: 17px;
+
+color: #000000;
+box-sizing: border-box;
+width: 282px;
+}

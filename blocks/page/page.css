@@ -1,0 +1,52 @@
+.page{
+  display: block;
+  position: relative;
+
+  background: black;
+  margin: 0 auto;
+  box-sizing: border-box;
+  z-index: 0;
+
+  font-family: 'Inter', Arial, sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+   text-rendering: optimizeLegibility;
+
+}
+
+/* Дежурная разметка */
+
+/*
+div {
+  border: 1px solid red;
+}
+
+
+section {
+  border: 1px solid blue;
+}
+
+
+p {
+  border: 1px solid green;
+  color: white;
+}
+
+ul, h2, h3, h4{
+  border: 1px dashed rgb(255, 0, 55);
+}
+section{
+  border: 1px solid yellow;
+}
+img{
+  border: 1px dashed black;
+}
+
+nav{
+  border: 1px dashed green;
+}
+
+*/
