@@ -7,67 +7,69 @@
     <link rel="stylesheet" href="pages/index.css">
 </head>
 <body class="page">
-    
     <header class="header">
         <img class="header__logo" src="images/header-logo.svg" alt="Место">
     </header>
-
     <main class="content">
         <section class="profile">
-           
                 <img src="images/avatar.svg" alt="аватар" class="profile__avatar">
 
                 <div class="profile__info">
-                    <h1 class="profile__name">Жак-Ив Кусто <button class="button button__edit"></button></h1>
-                    <p class="profile__profession">Исследователь океана</p>
-                   
+                    <div class="profile__cover">
+                        <h1 class="profile__name">Жак-Ив Кусто</h1>
+                        <button class="button button__edit"></button>
+                    </div>                       
+                    <p class="profile__job">Исследователь океана</p>   
                 </div>
                 <button class="button button__add"></button>
-        
- 
         </section>
-
         <section class="cards">
-           <div class="card">
-               <img class="card__image" src="images/image-dombay.svg" alt="Домбай">
-               <p class="signature">Домбай <button class="button button__like"></button></p>
-           </div>
-           <div class="card">
-                <img class="card__image" src="images/image-dombay.svg" alt="Домбай">
-                <p class="signature">Домбай <button class="button button__like"></button></p>
+            <div class="card">
+               <img class="card__image" src="images/image-dombay.svg" alt="Карачаевск">
+               <h2 class="card__name">Карачаевск</h2>
+               <button class="button button__like card__like"></button>
+            </div>
+            <div class="card">
+                <img class="card__image" src="images/image-dombay.svg" alt="Гора Эльбрус">
+                <h2 class="card__name">Гора Эльбрус</h2>
+                <button class="button button__like card__like"></button>
             </div>
             <div class="card">
                 <img class="card__image" src="images/image-dombay.svg" alt="Домбай">
-                <p class="signature">Домбай <button class="button button__like"></button></p>
+                <h2 class="card__name">Домбай</h2>
+                <button class="button button__like card__like"></button>
+            </div>
+            <div class="card">
+                <img class="card__image" src="images/image-dombay.svg" alt="Гора Эльбрус">
+                <h2 class="card__name">Гора Эльбрус</h2>
+                <button class="button button__like card__like"></button>
             </div>
             <div class="card">
                 <img class="card__image" src="images/image-dombay.svg" alt="Домбай">
-                <p class="signature">Домбай <button class="button button__like"></button></p>
+                <h2 class="card__name">Домбай</h2>
+                <button class="button button__like card__like"></button>
             </div>
             <div class="card">
-                <img class="card__image" src="images/image-dombay.svg" alt="Домбай">
-                <p class="signature">Домбай <button class="button button__like"></button></p>
-            </div>
-            <div class="card">
-                <img class="card__image" src="images/image-dombay.svg" alt="Домбай">
-                <p class="signature">Домбай <button class="button button__like"></button></p>
-            </div>
-          
+                <img class="card__image" src="images/image-dombay.svg" alt="Карачаево-Черкесск">
+                <h2 class="card__name">Карачаево-Черкесск</h2>
+                <button class="button button__like card__like"></button>
+            </div>  
         </section>
-
-
     </main> 
-
     <footer class="footer">
          <p class="footer__copyright">©2020. Енот</p>
     </footer>
-
-    <section class="popup">
+    <section class="popup popup_on">
+        <button class="button button__close"></button>
         <div class="popup__container">
-            <button class="button button__close"></button>
+           
+            <h2 class="popup__title">Редактировать профиль</h2>
+            <input class="popup__input" placeholder="Как вас зовут" type="text" id="name-field">
+            <input class="popup__input" placeholder="Ваша профессия" type="text" id="job-field">
+            <button class="button button__save">Сохранить</button>
         </div>
     </section>
-    
+     <script src="scripts/index.js"></script>   
 </body>
 </html>
 

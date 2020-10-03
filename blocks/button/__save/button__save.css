@@ -1,15 +1,16 @@
-.footer__copyright{
+.button__save{
+    height: 50px;
+    background-color: black;
     font-family: 'Inter', Arial, sans-serif;
     font-style: normal;
     font-weight: normal;
     font-size: 18px;
     line-height: 22px;
-    color: #545454;
-    margin: 0;
+    color: #FFFFFF;
 }
 
-@media screen and (max-width: 700px) {
-    .footer__copyright{
+@media screen and (max-width: 550px) {
+    .button__save{
         font-size: 14px;
         line-height: 17px;
     }

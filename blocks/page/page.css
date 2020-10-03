@@ -1,7 +1,6 @@
 .page{
   display: block;
   position: relative;
-
   background: black;
   margin: 0 auto;
   box-sizing: border-box;
@@ -14,7 +13,6 @@
   -ms-text-size-adjust: 100%;
   -moz-text-size-adjust: 100%;
    text-rendering: optimizeLegibility;
-
 }
 
 /* Дежурная разметка */

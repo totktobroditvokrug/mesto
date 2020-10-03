@@ -1,7 +1,17 @@
 .card{
+    display: grid;
+    margin: auto;
+    grid-template-rows: 282px 1fr ;
+    grid-template-columns: 1fr 40px;
+    grid-gap: 10px;
+    align-items: center;
+    grid-template-areas:
+    "photo photo"
+    "name like"; 
     width: 282px;
     height: 361px;
     background: #FFFFFF;
     border-radius: 10px;
     margin: 0 auto;
+    box-sizing: border-box;
 }
