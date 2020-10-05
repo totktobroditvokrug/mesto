@@ -15,60 +15,58 @@
                 <img src="images/avatar.svg" alt="аватар" class="profile__avatar">
 
                 <div class="profile__info">
-                    <div class="profile__cover">
                         <h1 class="profile__name">Жак-Ив Кусто</h1>
-                        <button class="button button__edit"></button>
-                    </div>                       
+                        <button class="button button__edit" type="button"></button>                      
                     <p class="profile__job">Исследователь океана</p>   
                 </div>
-                <button class="button button__add"></button>
+                <button class="button button__add" type="button"></button>
         </section>
         <section class="cards">
             <div class="card">
                <img class="card__image" src="images/image-dombay.svg" alt="Карачаевск">
                <h2 class="card__name">Карачаевск</h2>
-               <button class="button button__like card__like"></button>
+               <button class="button button__like card__like" type="button"></button>
             </div>
             <div class="card">
                 <img class="card__image" src="images/image-dombay.svg" alt="Гора Эльбрус">
                 <h2 class="card__name">Гора Эльбрус</h2>
-                <button class="button button__like card__like"></button>
+                <button class="button button__like card__like" type="button"></button>
             </div>
             <div class="card">
                 <img class="card__image" src="images/image-dombay.svg" alt="Домбай">
                 <h2 class="card__name">Домбай</h2>
-                <button class="button button__like card__like"></button>
+                <button class="button button__like card__like" type="button"></button>
             </div>
             <div class="card">
                 <img class="card__image" src="images/image-dombay.svg" alt="Гора Эльбрус">
                 <h2 class="card__name">Гора Эльбрус</h2>
-                <button class="button button__like card__like"></button>
+                <button class="button button__like card__like" type="button"></button>
             </div>
             <div class="card">
                 <img class="card__image" src="images/image-dombay.svg" alt="Домбай">
                 <h2 class="card__name">Домбай</h2>
-                <button class="button button__like card__like"></button>
+                <button class="button button__like card__like" type="button"></button>
             </div>
             <div class="card">
                 <img class="card__image" src="images/image-dombay.svg" alt="Карачаево-Черкесск">
                 <h2 class="card__name">Карачаево-Черкесск</h2>
-                <button class="button button__like card__like"></button>
+                <button class="button button__like card__like" type="button"></button>
             </div>  
         </section>
     </main> 
     <footer class="footer">
          <p class="footer__copyright">©2020. Енот</p>
     </footer>
-    <section class="popup popup_on">
-        <button class="button button__close"></button>
+    <form class="popup" name="user-information">
+        <button class="button button__close" type="button"></button>
         <div class="popup__container">
            
             <h2 class="popup__title">Редактировать профиль</h2>
-            <input class="popup__input" placeholder="Как вас зовут" type="text" id="name-field">
-            <input class="popup__input" placeholder="Ваша профессия" type="text" id="job-field">
-            <button class="button button__save">Сохранить</button>
+            <input class="popup__input" placeholder="Как вас зовут" type="text" id="user-name" name="user-name">
+            <input class="popup__input" placeholder="Ваша профессия" type="text" id="user-job" name="user-job">
+            <button class="button button__save" type="submit">Сохранить</button>
         </div>
-    </section>
+    </form>
      <script src="scripts/index.js"></script>   
 </body>
 </html>

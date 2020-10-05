@@ -9,7 +9,8 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    width: 100%;
+ /*   width: 100%; */
+    grid-area: user-name;
 }
 
 @media screen and (max-width: 700px) {

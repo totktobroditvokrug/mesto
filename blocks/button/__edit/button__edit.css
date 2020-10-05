@@ -1,11 +1,16 @@
 .button__edit{
-    margin-left: 17px;
-    margin-bottom: 13px;
     height: 24px;
     width: 24px;
     border: 1px solid #FFFFFF;
     background-image: url(../../../images/edit-button-pen.svg);
     background-position: center, center;
     background-repeat: no-repeat;
- }
+    margin-top: 6px;
+    grid-area: edit-profile;
+}
  
+ @media screen and (max-width: 700px) {
+    .button__edit{
+        margin-top: 0;
+    }
+}
