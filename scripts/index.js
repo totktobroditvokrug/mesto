@@ -1,8 +1,8 @@
 
 
 
-let buttonOpenPopup = document.querySelector('.button__edit');
-let buttonClosePopup = document.querySelector('.button__close');
+let buttonOpenPopup = document.querySelector('.button_edit');
+let buttonClosePopup = document.querySelector('.button_close');
 let popup = document.querySelector('.popup');
 let nameProfile = document.querySelector('.profile__name');  
 let jobProfile = document.querySelector('.profile__job');

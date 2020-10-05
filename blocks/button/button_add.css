@@ -1,17 +1,17 @@
-.button__add{
+.button_add{
     margin-right: 0;
     margin-left: auto;
     height: 50px;
     min-width: 150px;
     border: 2px solid #FFFFFF;
     border-radius: 2px;
-    background-image: url(../../../images/add-button-plus.svg);
+    background-image: url(../../images/add-button-plus.svg);
     background-position: center, center;
     background-repeat: no-repeat;
  }
  
  @media screen and (max-width: 700px) {
-    .button__add{
+    .button_add{
        width: 100%;
        max-width: 400px;
        margin-top: 36px;

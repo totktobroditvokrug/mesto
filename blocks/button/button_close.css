@@ -1,17 +1,17 @@
-.button__close{
+.button_close{
     width: 46px;
     height: 46px;
     position: relative;
     align-self: center;
     top: 8px;
     left: 232px;
-    background-image: url(../../../images/close-button.svg);   
+    background-image: url(../../images/close-button.svg);   
     background-position: center, center;
     background-repeat: no-repeat;
 }
 
 @media screen and (max-width: 550px) {
-    .button__close{
+    .button_close{
         top: -7px;
         left: 125px;
 

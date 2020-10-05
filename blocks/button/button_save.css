@@ -1,4 +1,4 @@
-.button__save{
+.button_save{
     height: 50px;
     background-color: black;
     font-family: 'Inter', Arial, sans-serif;
@@ -10,7 +10,7 @@
 }
 
 @media screen and (max-width: 550px) {
-    .button__save{
+    .button_save{
         font-size: 14px;
         line-height: 17px;
     }
