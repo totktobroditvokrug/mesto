@@ -3,4 +3,8 @@
     height: 282px;
     object-fit: contain;
     grid-area: photo;
+    overflow: hidden;
+    background-color: black;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }

@@ -1,8 +1,8 @@
-.button_edit{
+.button_type_edit{
     height: 24px;
     width: 24px;
     border: 1px solid #FFFFFF;
-    background-image: url(../../images/edit-button-pen.svg);
+    background-image: url(../../../images/edit-button-pen.svg);
     background-position: center, center;
     background-repeat: no-repeat;
     margin-top: 6px;
@@ -10,7 +10,9 @@
 }
  
  @media screen and (max-width: 700px) {
-    .button_edit{
+    .button_type_edit{
         margin-top: 0;
+        height: 18px;
+        width: 18px;
     }
 }

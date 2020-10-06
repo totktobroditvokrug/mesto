@@ -12,59 +12,59 @@
     </header>
     <main class="content">
         <section class="profile">
-                <img src="images/avatar.svg" alt="аватар" class="profile__avatar">
+                <img src="images/avatar.jpg" alt="аватар" class="profile__avatar">
 
                 <div class="profile__info">
                         <h1 class="profile__name">Жак-Ив Кусто</h1>
-                        <button class="button button_edit" type="button"></button>                      
+                        <button class="button button_type_edit" type="button" aria-label="Edit"></button>                      
                     <p class="profile__job">Исследователь океана</p>   
                 </div>
-                <button class="button button_add" type="button"></button>
+                <button class="button button_type_add" type="button" aria-label="Add"></button>
         </section>
         <section class="cards">
-            <div class="card">
-               <img class="card__image" src="images/image-dombay.svg" alt="Карачаевск">
+            <article class="card">
+               <img class="card__image" src="images/kirill-pershin-1088404-unsplash.jpg" alt="Карачаевск">
                <h2 class="card__name">Карачаевск</h2>
-               <button class="button button_like card__like" type="button"></button>
-            </div>
-            <div class="card">
-                <img class="card__image" src="images/image-dombay.svg" alt="Гора Эльбрус">
+               <button class="button button_type_like card__like" type="button" aria-label="Like"></button>
+            </article>
+            <article class="card">
+                <img class="card__image" src="images/kirill-pershin-1404681-unsplash.jpg" alt="Гора Эльбрус">
                 <h2 class="card__name">Гора Эльбрус</h2>
-                <button class="button button_like card__like" type="button"></button>
-            </div>
-            <div class="card">
-                <img class="card__image" src="images/image-dombay.svg" alt="Домбай">
+                <button class="button button_type_like card__like" type="button" aria-label="Like"></button>
+            </article>
+            <article class="card">
+                <img class="card__image" src="images/kirill-pershin-1556355-unsplash.jpg" alt="Домбай">
                 <h2 class="card__name">Домбай</h2>
-                <button class="button button_like card__like" type="button"></button>
-            </div>
-            <div class="card">
-                <img class="card__image" src="images/image-dombay.svg" alt="Гора Эльбрус">
+                <button class="button button_type_like card__like" type="button" aria-label="Like"></button>
+            </article>
+            <article class="card">
+                <img class="card__image" src="images/kirill-pershin-1404681-unsplash.jpg" alt="Гора Эльбрус">
                 <h2 class="card__name">Гора Эльбрус</h2>
-                <button class="button button_like card__like" type="button"></button>
-            </div>
-            <div class="card">
-                <img class="card__image" src="images/image-dombay.svg" alt="Домбай">
+                <button class="button button_type_like card__like" type="button" aria-label="Like"></button>
+            </article>
+            <article class="card">
+                <img class="card__image" src="images/kirill-pershin-1556355-unsplash.jpg" alt="Домбай">
                 <h2 class="card__name">Домбай</h2>
-                <button class="button button_like card__like" type="button"></button>
-            </div>
-            <div class="card">
-                <img class="card__image" src="images/image-dombay.svg" alt="Карачаево-Черкесск">
+                <button class="button button_type_like card__like" type="button" aria-label="Like"></button>
+            </article>
+            <article class="card">
+                <img class="card__image" src="images/kirill-pershin-1088404-unsplash.jpg" alt="Карачаево-Черкесск">
                 <h2 class="card__name">Карачаево-Черкесск</h2>
-                <button class="button button_like card__like" type="button"></button>
-            </div>  
+                <button class="button button_type_like card__like" type="button" aria-label="Like"></button>
+            </article>  
         </section>
     </main> 
     <footer class="footer">
          <p class="footer__copyright">©2020. Енот</p>
     </footer>
     <form class="popup" name="user-information">
-        <button class="button button_close" type="button"></button>
+        <button class="button button_type_close" type="button"></button>
         <div class="popup__container">
            
             <h2 class="popup__title">Редактировать профиль</h2>
             <input class="popup__input" placeholder="Как вас зовут" type="text" id="user-name" name="user-name">
             <input class="popup__input" placeholder="Ваша профессия" type="text" id="user-job" name="user-job">
-            <button class="button button_save" type="submit">Сохранить</button>
+            <button class="button button_type_save" type="submit">Сохранить</button>
         </div>
     </form>
      <script src="scripts/index.js"></script>   

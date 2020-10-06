@@ -1,8 +1,7 @@
 .card{
     display: grid;
-    margin: auto;
     grid-template-rows: 282px 1fr ;
-    grid-template-columns: 1fr 40px;
+    grid-template-columns: 1fr 43px;
     grid-gap: 10px;
     align-items: center;
     grid-template-areas:

@@ -1,8 +1,8 @@
 
 
 
-let buttonOpenPopup = document.querySelector('.button_edit');
-let buttonClosePopup = document.querySelector('.button_close');
+let buttonOpenPopup = document.querySelector('.button_type_edit');
+let buttonClosePopup = document.querySelector('.button_type_close');
 let popup = document.querySelector('.popup');
 let nameProfile = document.querySelector('.profile__name');  
 let jobProfile = document.querySelector('.profile__job');
@@ -32,6 +32,7 @@ function formSubmitHandler (evt) {
  
     nameProfile.textContent = nameInput.value;
     jobProfile.textContent = jobInput.value;
+    popupClose();
 }
 
 formElement.addEventListener('submit', formSubmitHandler);  // реагирует на enter без дополнительного кода
