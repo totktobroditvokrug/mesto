@@ -1,7 +1,7 @@
 .card__image{
     width: 282px;
     height: 282px;
-    object-fit: contain;
+    object-fit: cover;
     grid-area: photo;
     overflow: hidden;
     background-color: black;

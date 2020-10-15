@@ -57,7 +57,7 @@
     <footer class="footer">
          <p class="footer__copyright">©2020. Енот</p>
     </footer>
-    <form class="popup" name="user-information">
+    <form class="popup" name="user-information" id="user-information">
         <button class="button button_type_close" type="button"></button>
         <div class="popup__container">
            
@@ -67,6 +67,23 @@
             <button class="button button_type_save" type="submit">Сохранить</button>
         </div>
     </form>
+    <form class="popup" name="place-add" id="place-add">
+        <button class="button button_type_close" type="button"></button>
+        <div class="popup__container">
+           
+            <h2 class="popup__title">Новое место</h2>
+            <input class="popup__input" placeholder="Название" type="text" id="place-name" name="place-name">
+            <input class="popup__input" placeholder="Ссылка на картинку" type="text" id="place-link" name="place-link">
+            <button class="button button_type_save" type="button" id="button-add-place">Создать</button>
+        </div>
+    </form>
+    <template id="add-card-template">
+        <article class="card">
+            <img class="card__image" src="" alt="">
+            <h2 class="card__name">Карачаево-Черкесск</h2>
+            <button class="button button_type_like card__like" type="button" aria-label="Like"></button>
+        </article>  
+    </template>
      <script src="scripts/index.js"></script>   
 </body>
 </html>
