@@ -12,4 +12,5 @@
     box-sizing: border-box;
     grid-area: name;
     padding-bottom: 12px;
+    margin: 0;
 }

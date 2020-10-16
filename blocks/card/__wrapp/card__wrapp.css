@@ -1,0 +1,10 @@
+.card__wrapp{
+    width: 282px;
+    height: 282px;
+    grid-area: photo;
+    overflow: hidden;
+    background-color: black;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    position: relative;
+}

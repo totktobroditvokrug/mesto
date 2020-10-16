@@ -1,3 +1,4 @@
 .popup_on{
     display: flex;
+    transition: linear 1s;
 }

@@ -1,6 +1,6 @@
 
 
-// popup юзера
+// ---------------  popup редактирования юзера  -----------------
 let nameProfile = document.querySelector('.profile__name');  
 let jobProfile = document.querySelector('.profile__job');
 
@@ -23,7 +23,6 @@ function popupClose() {
 buttonOpenPopup.addEventListener("click", popupOpen);
 buttonClosePopup.addEventListener("click", popupClose);
 
-
 // Обработчик «отправки» формы, хотя пока
 // она никуда отправляться не будет
 function formSubmitHandler (evt) {
@@ -35,39 +34,10 @@ function formSubmitHandler (evt) {
 }
 
 formElement.addEventListener('submit', formSubmitHandler);  // реагирует на enter без дополнительного кода
+// ---------------
 
-/*
-// popup места
-let buttonOpenPopupPlace = document.querySelector('.button_type_edit');
-let buttonClosePopupPlace = document.querySelector('.button_type_close');
-let popup = document.querySelector('.popup');
-let nameProfile = document.querySelector('.profile__name');  
-let jobProfile = document.querySelector('.profile__job');
-*/
-const buttonOpenPopupAddPlace = document.querySelector('.button_type_add');
-const formElementAddPlace = document.querySelector('#place-add');  // находим форму
-const namePlace = formElementAddPlace.querySelector('#place-name'); // название места
-const linkPlace = formElementAddPlace.querySelector('#place-link');   // ссылка на изображение места
-const buttonClosePopupAddPlace = formElementAddPlace.querySelector('.button_type_close');
-const buttonAddPlace = formElementAddPlace.querySelector('#button-add-place');
-function popupOpenAddPlace() {
-    formElementAddPlace.classList.add('popup_on');
-}
 
-function popupCloseAddPlace() {
-    formElementAddPlace.classList.remove('popup_on');
-}
-
-buttonOpenPopupAddPlace.addEventListener("click", popupOpenAddPlace);
-buttonClosePopupAddPlace.addEventListener("click", popupCloseAddPlace);
-
-function addPlace() {
-    console.log('сохранить место');
-}
-
-buttonAddPlace.addEventListener("click", addPlace);
-
-//----- инициализация карточек ----
+//---------------- инициализация карточек ----------------
 const initialCards = [
     {
         name: 'Архыз',
@@ -100,104 +70,89 @@ const addCardTemplate = document.querySelector('#add-card-template');  // пои
 
 function getItems(name, link) {  // заполнить карточку по template
     const card = addCardTemplate.content.cloneNode(true);  // клонируем текущую карточку
-    card.querySelector('.card__image').src = link;
-    card.querySelector('.card__name').textContent = name;
+    const cardImage = card.querySelector('.card__image');
+    const buttonCardLike = card.querySelector('.button_type_like');  // кнопка лайка
+    const buttonCardTrash = card.querySelector('.button_type_trash');  // кнопка удаления карточки
+
+    cardImage.src = link;
+    cardImage.alt = name;
+    card.querySelector('.card__name').textContent = name; 
+    buttonCardLike.addEventListener('click', function (evt) {
+    evt.target.classList.toggle('card__like_active');
+    // console.log('лайк карточке' + evt.target.classList);
+    });
+
+    buttonCardTrash.addEventListener('click', function (evt) {
+            evt.target.closest('.card').remove();
+    });
+
+
+    cardImage.addEventListener('click', function (evt) {
+        ViewImageLink.src = link;
+        ViewImageTitle.textContent = name;
+        popupOpenViewImage();
+    //    console.log('клик по карточке' + ViewImageLink, ViewImageTitle);
+    });
     return card;
 };
 
-const elements = initialCards.map(function (element) {  // инициализируе6м карточки
+const elements = initialCards.map(function (element) {  // инициализируем карточки
     return getItems(element.name, element.link);
     
 });
 
-const placeList = document.querySelector('.cards'); // начало контейнера для мест
- // console.log(elements[1]);
+const placeList = document.querySelector('.cards'); // начало контейнера для карточек
 
- elements.forEach((item) => placeList.append(item));
+elements.forEach((item) => placeList.append(item)); // заливаем инициализированные карточки на страницу
+// ---------------
 
-/*
-const TODO_LIST = [
-    {title: 'Посмотреть вебинар 🎥'},
-    {title: 'Посмотреть вопросы с собеседований 👔'},
-    {title: 'Покормить кота 😸'},
-    {title: 'Поработать над своим сайтом 👨‍💻'},
-    {title: 'Прогуляться в парке 🌳'},
-];
+//---------------- popup добавления места ----------------
 
-const list = document.querySelector('.todo__list');
-const addButton = document.querySelector('.button_add');
-const input = document.querySelector('.input');
-const template = document.querySelector('.template');
+const buttonOpenPopupAddPlace = document.querySelector('.button_type_add');
+const formElementAddPlace = document.querySelector('#place-add');  // находим форму
+const namePlace = formElementAddPlace.querySelector('#place-name'); // название места
+const linkPlace = formElementAddPlace.querySelector('#place-link');   // ссылка на изображение места
+const buttonClosePopupAddPlace = formElementAddPlace.querySelector('.button_type_close');
+const buttonAddPlace = formElementAddPlace.querySelector('#button-add-place');
+function popupOpenAddPlace() {
+    formElementAddPlace.classList.add('popup_on');
+}
 
-const renderList = () => {
-    const items = TODO_LIST.map(element => getItems(element));
+function popupCloseAddPlace() {
+    formElementAddPlace.classList.remove('popup_on');
+}
 
-    // spread -> const array [1, 2, 3] ...
-    // ...array -> 1, 2, 3
-    list.append(...items)
-};
+buttonOpenPopupAddPlace.addEventListener("click", popupOpenAddPlace);
+buttonClosePopupAddPlace.addEventListener("click", popupCloseAddPlace);
 
-const handlerRemove = (event) => {
-    event.target.closest('.card').remove();
-};
+function addPlace(evt) {
+    evt.preventDefault(); 
 
-const handlerDuplicate = (event) => {
-    const cardTitle = event.target.closest('.card').querySelector('.card__title').innerHTML;
+    if (namePlace.value !== '' && linkPlace.value !== '') {
+        placeList.append(getItems(namePlace.value, linkPlace.value)); // добавить новую карточку по кнопке Создать
+        console.log('сохранить место');
+    }
+    namePlace.value = '';  // сбросить поля формы
+    linkPlace.value = '';
+    popupCloseAddPlace();
+}
 
-    const item = getItems({
-        title: cardTitle
-    });
+formElementAddPlace.addEventListener("submit", addPlace);
+// ---------------
 
-    list.prepend(item);
-};
+//---------------- popup просмотра фотографий ----------------
+const formViewImage = document.querySelector('#view-image');  // находим блок просмотра фотографии
+const buttonCloseViewImage = formViewImage.querySelector('.button_type_close');
+const ViewImageTitle = formViewImage.querySelector('.card__name_dark');
+const ViewImageLink = formViewImage.querySelector('.photo');
 
-const getItems = (data) => {
-    const card = template.content.cloneNode(true);
-    card.querySelector('.card__title').innerText = data.title;
+function popupOpenViewImage() {
+    formViewImage.classList.add('popup_on');
+}
 
-    const duplicateButton = card.querySelector('.button_duplicate');
-    const removeButton = card.querySelector('.button_remove');
+function popupCloseViewImage() {
+    formViewImage.classList.remove('popup_on');
+}
 
-    // console.log({ duplicateButton, removeButton });
-
-    removeButton.addEventListener('click', handlerRemove);
-    duplicateButton.addEventListener('click', handlerDuplicate);
-
-    return card;
-};
-
-const bindHandlers = () => {
-    addButton.addEventListener('click', () => {
-        const item = getItems({
-            title: input.value
-        });
-
-        list.prepend(item);
-
-        input.value = '';
-    });
-};
-
-renderList();
-bindHandlers();
-
-
-// Это пример template-строк
-const someConst = 'Иванов';
-// const name = "Егор" + '' + someConst;
-const name = `Егор ${someConst}`;
-// name Егор Иванов
-
-
-
-
-// const functionName = () => {
-//   return;
-// }
-
-// const functionName = () => console.log('+');
-
-// function functionName() {
-    
-// }
-*/
+buttonCloseViewImage.addEventListener("click", popupCloseViewImage);
+// ---------------

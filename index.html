@@ -21,37 +21,8 @@
                 </div>
                 <button class="button button_type_add" type="button" aria-label="Add"></button>
         </section>
-        <section class="cards">
-            <article class="card">
-               <img class="card__image" src="images/kirill-pershin-1088404-unsplash.jpg" alt="Карачаевск">
-               <h2 class="card__name">Карачаевск</h2>
-               <button class="button button_type_like card__like" type="button" aria-label="Like"></button>
-            </article>
-            <article class="card">
-                <img class="card__image" src="images/kirill-pershin-1404681-unsplash.jpg" alt="Гора Эльбрус">
-                <h2 class="card__name">Гора Эльбрус</h2>
-                <button class="button button_type_like card__like" type="button" aria-label="Like"></button>
-            </article>
-            <article class="card">
-                <img class="card__image" src="images/kirill-pershin-1556355-unsplash.jpg" alt="Домбай">
-                <h2 class="card__name">Домбай</h2>
-                <button class="button button_type_like card__like" type="button" aria-label="Like"></button>
-            </article>
-            <article class="card">
-                <img class="card__image" src="images/kirill-pershin-1404681-unsplash.jpg" alt="Гора Эльбрус">
-                <h2 class="card__name">Гора Эльбрус</h2>
-                <button class="button button_type_like card__like" type="button" aria-label="Like"></button>
-            </article>
-            <article class="card">
-                <img class="card__image" src="images/kirill-pershin-1556355-unsplash.jpg" alt="Домбай">
-                <h2 class="card__name">Домбай</h2>
-                <button class="button button_type_like card__like" type="button" aria-label="Like"></button>
-            </article>
-            <article class="card">
-                <img class="card__image" src="images/kirill-pershin-1088404-unsplash.jpg" alt="Карачаево-Черкесск">
-                <h2 class="card__name">Карачаево-Черкесск</h2>
-                <button class="button button_type_like card__like" type="button" aria-label="Like"></button>
-            </article>  
+        <section class="cards"> 
+            <!-- динамически заполняется карточками -->
         </section>
     </main> 
     <footer class="footer">
@@ -74,14 +45,26 @@
             <h2 class="popup__title">Новое место</h2>
             <input class="popup__input" placeholder="Название" type="text" id="place-name" name="place-name">
             <input class="popup__input" placeholder="Ссылка на картинку" type="text" id="place-link" name="place-link">
-            <button class="button button_type_save" type="button" id="button-add-place">Создать</button>
+            <button class="button button_type_save" type="submit" id="button-add-place">Создать</button>
         </div>
     </form>
+    <div class="popup popup_style_photo" id="view-image">
+        <button class="button button_type_close" type="button"></button>
+        <div class="popup__photo">
+            <img  class="photo" src="https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg" alt="">
+            <h2 class="card__name card__name_dark">Карачаево-Черкесск</h2>
+        </div>
+    </div>
     <template id="add-card-template">
         <article class="card">
-            <img class="card__image" src="" alt="">
+            <div class="card__wrapp">
+                <button class="button button_type_trash" type="button" aria-label="Like"></button>
+                 <img  class="card__image" src="" alt="">
+            </div>
+            
             <h2 class="card__name">Карачаево-Черкесск</h2>
             <button class="button button_type_like card__like" type="button" aria-label="Like"></button>
+           
         </article>  
     </template>
      <script src="scripts/index.js"></script>   
