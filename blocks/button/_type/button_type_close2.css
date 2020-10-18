@@ -9,7 +9,6 @@
         background-repeat: no-repeat;
         align-self: end;
         box-sizing: border-box;
-        border: 1px dashed red;
         align-self: flex-end;
         transform: translate(46px, 3px);
 }
