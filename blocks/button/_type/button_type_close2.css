@@ -1,0 +1,22 @@
+.button_type_close2{
+        width: 46px;
+        height: 46px;
+        margin: 0;
+        padding: 0;
+        align-self: end;
+        background-image: url(../../../images/close-button.svg);   
+        background-position: center, center;
+        background-repeat: no-repeat;
+        align-self: end;
+        box-sizing: border-box;
+        border: 1px dashed red;
+        align-self: flex-end;
+        transform: translate(46px, 3px);
+}
+@media screen and (max-width: 550px) {
+        .button_type_close2{
+            width: 35px;
+            height: 35px;
+            transform: translate(0px, -3px);
+        }
+    }

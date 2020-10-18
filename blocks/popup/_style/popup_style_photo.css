@@ -1,4 +1,5 @@
 .popup_style_photo{
     background-color: rgba(0, 0, 0, 0.9);
-  /*  transition: linear 1s;  */
+    box-sizing: border-box;
+    border: 1px solid green;
 }

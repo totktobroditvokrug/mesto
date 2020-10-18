@@ -128,8 +128,8 @@ buttonClosePopupAddPlace.addEventListener("click", popupCloseAddPlace);
 function addPlace(evt) {
     evt.preventDefault(); 
 
-    if (namePlace.value !== '' && linkPlace.value !== '') {
-        placeList.append(getItems(namePlace.value, linkPlace.value)); // добавить новую карточку по кнопке Создать
+    if (namePlace.value !== '' && linkPlace.value !== '' &&  !linkPlace.value.includes('<', '>') && !namePlace.value.includes('<', '>')) {
+        placeList.prepend(getItems(namePlace.value, linkPlace.value)); // добавить новую карточку по кнопке Создать
         console.log('сохранить место');
     }
     namePlace.value = '';  // сбросить поля формы
@@ -142,7 +142,7 @@ formElementAddPlace.addEventListener("submit", addPlace);
 
 //---------------- popup просмотра фотографий ----------------
 const formViewImage = document.querySelector('#view-image');  // находим блок просмотра фотографии
-const buttonCloseViewImage = formViewImage.querySelector('.button_type_close');
+const buttonCloseViewImage = formViewImage.querySelector('.button_type_close2');
 const ViewImageTitle = formViewImage.querySelector('.card__name_dark');
 const ViewImageLink = formViewImage.querySelector('.photo');
 

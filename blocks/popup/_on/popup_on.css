@@ -1,4 +1,4 @@
 .popup_on{
-    display: flex;
-    transition: linear 1s;
+    visibility: visible;
+    opacity: 1;
 }

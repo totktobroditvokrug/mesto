@@ -1,4 +1,9 @@
 .popup__photo{
-    max-width: 75vw;
-    max-height: 75vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    position: relative;
+    z-index: 1;
+    box-sizing: border-box;
+    border: 1px solid red;
 }
