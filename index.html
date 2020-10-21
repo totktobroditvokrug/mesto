@@ -43,14 +43,14 @@
         <div class="popup__container">
            
             <h2 class="popup__title">Новое место</h2>
-            <input class="popup__input" placeholder="Название" type="text" id="place-name" name="place-name">
-            <input class="popup__input" placeholder="Ссылка на картинку" type="text" id="place-link" name="place-link">
+            <input required class="popup__input" placeholder="Название" type="text" id="place-name" name="place-name">
+            <input required class="popup__input" placeholder="Ссылка на картинку" type="text" id="place-link" name="place-link">
             <button class="button button_type_save" type="submit" id="button-add-place">Создать</button>
         </div>
     </form>
     <div class="popup popup_style_photo" id="view-image">
         <div class="popup__photo">
-            <button class="button button_type_close2" type="button">''</button>
+            <button class="button button_type_close2" type="button" aria-label="Удалить"></button>
             <img  class="photo" src="https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg" alt="">
             <h2 class="card__name card__name_dark"></h2>
         </div>
@@ -66,7 +66,8 @@
            
         </article>  
     </template>
-     <script src="scripts/index.js"></script>   
+    <script src="scripts/define.js"></script> 
+    <script src="scripts/index.js"></script>   
 </body>
 </html>
 
