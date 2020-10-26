@@ -33,9 +33,9 @@
         <div class="popup__container">
            
             <h2 class="popup__title">Редактировать профиль</h2>
-            <input class="popup__input" placeholder="Как вас зовут" type="text" id="user-name" name="user-name">
-            <input class="popup__input" placeholder="Ваша профессия" type="text" id="user-job" name="user-job">
-            <button class="button button_type_save" type="submit">Сохранить</button>
+            <input class="popup__input popup__input_type_error" placeholder="Как вас зовут" type="text" id="user-name" name="user-name">
+            <input class="popup__input popup__input_type_error" placeholder="Ваша профессия" type="text" id="user-job" name="user-job">
+            <button class="button button_type_save button_type_inactive" type="submit">Сохранить</button>
         </div>
     </form>
     <form class="popup" name="place-add" id="place-add">
@@ -43,9 +43,9 @@
         <div class="popup__container">
            
             <h2 class="popup__title">Новое место</h2>
-            <input required class="popup__input" placeholder="Название" type="text" id="place-name" name="place-name">
-            <input required class="popup__input" placeholder="Ссылка на картинку" type="text" id="place-link" name="place-link">
-            <button class="button button_type_save" type="submit" id="button-add-place">Создать</button>
+            <input required class="popup__input popup__input_type_error" placeholder="Название" type="text" id="place-name" name="place-name">
+            <input required class="popup__input popup__input_type_error" placeholder="Ссылка на картинку" type="text" id="place-link" name="place-link">
+            <button class="button button_type_save button_type_inactive" type="submit" id="button-add-place">Создать</button>
         </div>
     </form>
     <div class="popup popup_style_photo" id="view-image">
