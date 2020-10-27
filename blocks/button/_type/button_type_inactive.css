@@ -1,4 +1,6 @@
 .button_type_inactive{
     background: #E5E5E5;
     color: #000000;
+    opacity: 0.6;
+    cursor: default;
 }

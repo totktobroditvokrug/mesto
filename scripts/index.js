@@ -1,3 +1,5 @@
+const popupAreas =  Array.from(document.querySelectorAll('.popup')); // массив полей попапа
+
 // ---------------  popup редактирования юзера  -----------------
 const nameProfile = document.querySelector('.profile__name');  
 const jobProfile = document.querySelector('.profile__job');
@@ -28,6 +30,7 @@ const addCardTemplate = document.querySelector('#add-card-template');  // пои
 
 
 function openPopup(form) {   // открывальщик всех форм
+    enableValidation(elementsForValidation);  // передаем на валидацию весь объект со стилями формы
     form.classList.add('popup_on');
 }
 
@@ -40,6 +43,24 @@ function editPopupProfile() {   //
     jobInput.value = jobProfile.textContent;
     openPopup(profileFormElement);
 }
+
+const onClickPopupLayout = (evt) => {
+    if(evt.target !== evt.currentTarget){
+    return;
+    }
+    closePopup(evt.currentTarget);  // закрываем текущую форму по клику вне его
+}
+
+popupAreas.forEach((area) => {
+    console.log(area);
+    area.addEventListener('mousedown', onClickPopupLayout);
+    document.addEventListener('keydown', function (evt) {
+        if (evt.key === 'Escape') {
+            closePopup(area);  //  закрытие текущего попапа по эскейпу
+        }     
+    });
+});
+
 
 buttonOpenPopupProfile.addEventListener("click", () =>  editPopupProfile());
 buttonClosePopupProfile.addEventListener("click", () =>  closePopup(profileFormElement));
