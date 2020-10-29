@@ -1,3 +1,13 @@
+function checkButtonInForm (elementsForValidation, formElement){
+    console.log('проверка наличия кнопки');
+    const buttonElement = formElement.querySelector(elementsForValidation.submitButtonSelector);
+    if (buttonElement !== null){  // проверка формы на наличие кнопки submit
+        console.log('кнопка есть');
+        return true;
+    }
+    return false;
+}
+
 function showError(elementsForValidation, formElement, input) {
     const errorElement = formElement.querySelector(`#${input.id}-error`);
     errorElement.textContent = input.validationMessage;
@@ -11,9 +21,7 @@ function hideError(elementsForValidation, formElement, input) {
 }
 
 function checkInputValidity(elementsForValidation, formElement, input) {
-    console.log('проверка валидности полей');
     hideError(elementsForValidation, formElement, input);
-
     if (!input.checkValidity()) {
         showError(elementsForValidation, formElement, input);
     }
@@ -31,8 +39,8 @@ function toggleButtonState(elementsForValidation, formElement, buttonElement) {
 
 function setEventListeners(elementsForValidation, formElement) {
     const inputElements = Array.from(formElement.querySelectorAll(elementsForValidation.inputSelector));
-    const buttonElement = formElement.querySelector(elementsForValidation.submitButtonSelector);
-    if (buttonElement !== null){  // проверка формы на наличие кнопки submit
+      if(checkButtonInForm (elementsForValidation, formElement)){
+        const buttonElement = formElement.querySelector(elementsForValidation.submitButtonSelector);
         inputElements.forEach((input) => {
             input.addEventListener('input', (evt) => {
                 checkInputValidity(elementsForValidation, formElement, evt.target);
@@ -54,7 +62,7 @@ function resetTextErrors(formElement) {  // сброс ошибок для по�
 function enableValidation(elementsForValidation) {   // валидация вызывается при открытии формы в index.js, иначе повторное открытие не ставит disable на кнопки
     const formElements = Array.from(document.querySelectorAll(elementsForValidation.formSelector));
     formElements.forEach(form => {
-        resetTextErrors(form);  // сброс повторно открытых окон, закрытых до этого с ошибкой
+//        console.log(form);
         form.addEventListener('submit', (evt) => {
             evt.preventDefault();
         });
@@ -67,5 +75,8 @@ const elementsForValidation = {   // объявляем объект со сти
     inputSelector: '.popup__input',
     submitButtonSelector: '.button_type_save',
     inactiveButtonClass: 'button_type_inactive',
-    inputErrorClass: 'popup__input_type_error'
+    inputErrorClass: 'popup__input_type_error',
+    formIsActive: 'popup_on'
 };
+
+enableValidation(elementsForValidation);  // передаем на валидацию объект со стилями формы

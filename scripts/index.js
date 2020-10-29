@@ -26,22 +26,35 @@ const viewImageLink = formViewImage.querySelector('.photo');
 
 const addCardTemplate = document.querySelector('#add-card-template');  // поиск шаблона
 
+function  closePopupOnEscape (evt){  // закрытие активного попапа по Escape
+    if (evt.key === 'Escape') {
+      document.querySelector('.popup_on');
+        closePopup(document.querySelector('.popup_on'));
+    }     
+}
 
-
-
-function openPopup(form) {   // открывальщик всех форм
-    enableValidation(elementsForValidation);  // передаем на валидацию весь объект со стилями формы
+function openPopup(elementsForValidation, form) {   // открывальщик всех форм
+    resetTextErrors(form);  // сброс повторно открытых окон, закрытых до этого с ошибкой
+    addPlaceFormElement.reset();
+    if (checkButtonInForm(elementsForValidation, form)){
+        const buttonElement = form.querySelector(elementsForValidation.submitButtonSelector);
+        buttonElement.classList.add('button_type_inactive');
+        buttonElement.disabled = true;
+    }
+   
     form.classList.add('popup_on');
+    document.addEventListener('keydown', closePopupOnEscape);
 }
 
 function closePopup(form) {  // закрывальщик всех форм
     form.classList.remove('popup_on');
+    document.removeEventListener('keydown', closePopupOnEscape);
 }
 
 function editPopupProfile() {   // 
     nameInput.value = nameProfile.textContent;  // подгружаем значения профиля
     jobInput.value = jobProfile.textContent;
-    openPopup(profileFormElement);
+    openPopup(elementsForValidation, profileFormElement);
 }
 
 const onClickPopupLayout = (evt) => {
@@ -51,14 +64,8 @@ const onClickPopupLayout = (evt) => {
     closePopup(evt.currentTarget);  // закрываем текущую форму по клику вне его
 }
 
-popupAreas.forEach((area) => {
-    console.log(area);
+popupAreas.forEach((area) => {  // каждому попапу слушатель мышки
     area.addEventListener('mousedown', onClickPopupLayout);
-    document.addEventListener('keydown', function (evt) {
-        if (evt.key === 'Escape') {
-            closePopup(area);  //  закрытие текущего попапа по эскейпу
-        }     
-    });
 });
 
 
@@ -74,7 +81,7 @@ function submitProfile (evt) {   // заполнение формы профил
 
 profileFormElement.addEventListener('submit', submitProfile);  // реагирует на enter без дополнительного кода
 
-function getItems(name, link) {  // заполнить карточку по template
+function createCard(name, link) {  // заполнить карточку по template
     const card = addCardTemplate.content.cloneNode(true);  // клонируем текущую карточку
     const cardImage = card.querySelector('.card__image');
     const buttonCardLike = card.querySelector('.button_type_like');  // кнопка лайка
@@ -102,23 +109,23 @@ function handlerPreviewPicture(name, link) {            // просмотр фо
     viewImageLink.src = link; 
     viewImageTitle.textContent = name; 
     viewImageLink.alt = name;
-    openPopup(formViewImage);
+    openPopup(elementsForValidation, formViewImage);
 }
 
 const elements = initialCards.map(function (element) {  // инициализируем карточки
-    return getItems(element.name, element.link);  
+    return createCard(element.name, element.link);  
 });
 
 elements.forEach((item) => placeList.append(item)); // заливаем инициализированные карточки на страницу
 
 
-buttonOpenPopupAddPlace.addEventListener("click", () => openPopup(addPlaceFormElement));
+buttonOpenPopupAddPlace.addEventListener("click", () => openPopup(elementsForValidation, addPlaceFormElement));
 buttonClosePopupAddPlace.addEventListener("click", () =>  closePopup(addPlaceFormElement));
 
 function addPlace(evt) {
     evt.preventDefault(); 
 
-    placeList.prepend(getItems(namePlace.value, linkPlace.value)); // добавить новую карточку по кнопке Создать
+    placeList.prepend(createCard(namePlace.value, linkPlace.value)); // добавить новую карточку по кнопке Создать
     addPlaceFormElement.reset();
     closePopup(addPlaceFormElement);
 }
