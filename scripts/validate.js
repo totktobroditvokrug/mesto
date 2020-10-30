@@ -1,8 +1,6 @@
 function checkButtonInForm (elementsForValidation, formElement){
-    console.log('проверка наличия кнопки');
     const buttonElement = formElement.querySelector(elementsForValidation.submitButtonSelector);
     if (buttonElement !== null){  // проверка формы на наличие кнопки submit
-        console.log('кнопка есть');
         return true;
     }
     return false;

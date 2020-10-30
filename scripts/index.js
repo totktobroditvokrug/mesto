@@ -33,15 +33,7 @@ function  closePopupOnEscape (evt){  // закрытие активного по
     }     
 }
 
-function openPopup(elementsForValidation, form) {   // открывальщик всех форм
-    resetTextErrors(form);  // сброс повторно открытых окон, закрытых до этого с ошибкой
-    addPlaceFormElement.reset();
-    if (checkButtonInForm(elementsForValidation, form)){
-        const buttonElement = form.querySelector(elementsForValidation.submitButtonSelector);
-        buttonElement.classList.add('button_type_inactive');
-        buttonElement.disabled = true;
-    }
-   
+function openPopup(form) {   // открывальщик всех форм
     form.classList.add('popup_on');
     document.addEventListener('keydown', closePopupOnEscape);
 }
@@ -51,12 +43,6 @@ function closePopup(form) {  // закрывальщик всех форм
     document.removeEventListener('keydown', closePopupOnEscape);
 }
 
-function editPopupProfile() {   // 
-    nameInput.value = nameProfile.textContent;  // подгружаем значения профиля
-    jobInput.value = jobProfile.textContent;
-    openPopup(elementsForValidation, profileFormElement);
-}
-
 const onClickPopupLayout = (evt) => {
     if(evt.target !== evt.currentTarget){
     return;
@@ -64,10 +50,16 @@ const onClickPopupLayout = (evt) => {
     closePopup(evt.currentTarget);  // закрываем текущую форму по клику вне его
 }
 
+function editPopupProfile() {   // 
+    nameInput.value = nameProfile.textContent;  // подгружаем значения профиля
+    jobInput.value = jobProfile.textContent;
+    resetTextErrors(profileFormElement);  // сброс старых текстов ошибок при редактировании профиля
+    openPopup(profileFormElement);
+}
+
 popupAreas.forEach((area) => {  // каждому попапу слушатель мышки
     area.addEventListener('mousedown', onClickPopupLayout);
 });
-
 
 buttonOpenPopupProfile.addEventListener("click", () =>  editPopupProfile());
 buttonClosePopupProfile.addEventListener("click", () =>  closePopup(profileFormElement));
@@ -109,7 +101,7 @@ function handlerPreviewPicture(name, link) {            // просмотр фо
     viewImageLink.src = link; 
     viewImageTitle.textContent = name; 
     viewImageLink.alt = name;
-    openPopup(elementsForValidation, formViewImage);
+    openPopup(formViewImage);
 }
 
 const elements = initialCards.map(function (element) {  // инициализируем карточки
@@ -119,7 +111,14 @@ const elements = initialCards.map(function (element) {  // инициализи�
 elements.forEach((item) => placeList.append(item)); // заливаем инициализированные карточки на страницу
 
 
-buttonOpenPopupAddPlace.addEventListener("click", () => openPopup(elementsForValidation, addPlaceFormElement));
+buttonOpenPopupAddPlace.addEventListener("click", () => {
+    resetTextErrors(addPlaceFormElement);  // сброс старых текстов ошибок при добавления карточек
+    addPlaceFormElement.reset();
+    buttonAddPlace.classList.add('button_type_inactive');
+    buttonAddPlace.disabled = true;
+    openPopup(addPlaceFormElement);
+});
+
 buttonClosePopupAddPlace.addEventListener("click", () =>  closePopup(addPlaceFormElement));
 
 function addPlace(evt) {
