@@ -38,3 +38,5 @@
 @import url('../blocks/popup/__input/_type/popup__input_type_error.css');
 @import url('../blocks/popup/__error/popup__error.css');
 @import url('../blocks/photo/photo.css');
+@import url('../blocks/signature/signature.css');
+@import url('../blocks/signature/_dark/signature_dark.css');

@@ -1,0 +1,16 @@
+.signature{
+    font-family: 'Inter', 'Arial', sans-serif;
+    font-style: normal;
+    font-weight: 900;
+    font-size: 24px;
+    line-height: 29px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-left: 21px;
+    color: #000000;
+    box-sizing: border-box;
+    grid-area: name;
+    padding-bottom: 12px;
+    margin: 0;
+}

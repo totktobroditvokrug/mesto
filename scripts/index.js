@@ -26,7 +26,7 @@ const placeList = document.querySelector('.cards'); // начало контей
 
 export const formViewImage = document.querySelector('#view-image');  // находим блок просмотра фотографии
 export const buttonCloseViewImage = formViewImage.querySelector('.button_type_close2');
-export const viewImageTitle = formViewImage.querySelector('.card__name_dark');
+export const viewImageTitle = formViewImage.querySelector('.signature_dark');
 export const viewImageLink = formViewImage.querySelector('.photo');
 
 // const addCardTemplate = document.querySelector('#add-card-template');  // поиск шаблона
