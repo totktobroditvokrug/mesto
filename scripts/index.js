@@ -1,6 +1,8 @@
 // ---------------  импорт модулей  -----------------
-import { initialCards, Card } from './Card.js'
-import { elementsForValidation, FormValidator } from './FormValidator.js'
+import { Card } from './Card.js'
+import { FormValidator } from './FormValidator.js'
+import { initialCards } from './constants.js';
+import { elementsForValidation } from './constants.js';
 
 const popupAreas =  Array.from(document.querySelectorAll('.popup')); // массив полей попапа
 
@@ -34,8 +36,7 @@ export const viewImageLink = formViewImage.querySelector('.photo');
 
 function  closePopupOnEscape (evt){  // закрытие активного попапа по Escape
     if (evt.key === 'Escape') {
-      document.querySelector('.popup_on');
-        closePopup(document.querySelector('.popup_on'));
+      closePopup(document.querySelector('.popup_on'));
     }     
 }
 
@@ -50,10 +51,9 @@ function closePopup(form) {  // закрывальщик всех форм
 }
 
 const onClickPopupLayout = (evt) => {
-    if(evt.target !== evt.currentTarget){
-    return;
+    if(evt.target === evt.currentTarget){
+      closePopup(evt.currentTarget);  // закрываем текущую форму по клику вне его
     }
-    closePopup(evt.currentTarget);  // закрываем текущую форму по клику вне его
 }
 
 function editPopupProfile() {   // 

@@ -1,14 +1,4 @@
 //----------------- валидация по ООП -----------------------
-export const elementsForValidation = {   // объявляем объект со стилями форм для валидации отдельно без вызова функции
-    formSelector: '.popup',
-    inputSelector: '.popup__input',
-    submitButtonSelector: '.button_type_save',
-    inactiveButtonClass: 'button_type_inactive',
-    inputErrorClass: 'popup__input_type_error',
-    formIsActive: 'popup_on'
-};
-
-
 export class FormValidator {
     constructor (config, form) {
       this._form = form;
@@ -17,13 +7,12 @@ export class FormValidator {
       this._submitButtonSelector = config.submitButtonSelector;
       this._inactiveButtonClass = config.inactiveButtonClass;
       this._inputErrorClass = config.inputErrorClass;
+      this._inputList = Array.from(this._form.querySelectorAll(this._inputSelector));
     }
   
     _checkButtonInForm () {
-        if (this._form.querySelector(this._submitButtonSelector) !== null){  // проверка формы на наличие кнопки submit
-            return true;
-        }
-        return false;
+        return this._form.querySelector(this._submitButtonSelector) !== null; // проверка формы на наличие кнопки submit
+   
     }
     
     _showError(input) {  // вывод текста ошибки валидации
@@ -39,10 +28,10 @@ export class FormValidator {
     }
     
     _checkInputValidity(input) {
-        this._hideError(input);
         if (!input.checkValidity()) {
             this._showError(input);
         }
+        else this._hideError(input);
     }
 
     _toggleButtonState(buttonElement) {
@@ -56,15 +45,12 @@ export class FormValidator {
     }
 
   _setEventListeners() {
-    const inputElements = Array.from(this._form.querySelectorAll(this._inputSelector));
-
       if(this._checkButtonInForm ()){
         const buttonElement = this._form.querySelector(this._submitButtonSelector);
-        inputElements.forEach((input) => {
+        this._inputList.forEach((input) => {
             input.addEventListener('input', (evt) => {
-                // console.log('слушатель инпута');
-                this._checkInputValidity(evt.target);
-                this._toggleButtonState(buttonElement);
+              this._checkInputValidity(evt.target);
+              this._toggleButtonState(buttonElement);
         });
       });
       this._toggleButtonState(buttonElement);
@@ -79,9 +65,8 @@ export class FormValidator {
   }
   
   resetTextErrors() {  // сброс ошибок для повторного открытия полей, закрытых с ошибками
-    const inputElements = Array.from(this._form.querySelectorAll(this._inputSelector));
-    inputElements.forEach((input) => {
-        this._hideError(input);
+      this._inputList.forEach((input) => {
+      this._hideError(input);
     });
   }
 }

@@ -2,34 +2,6 @@
 import { formViewImage ,buttonCloseViewImage , viewImageTitle, viewImageLink } from './index.js'
 import { openPopup } from './index.js'
 
- //---------------- инициализация карточек ----------------
-export const initialCards = [
-    {
-        name: 'Архыз',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-    },
-    {
-        name: 'Челябинская область',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-    },
-    {
-        name: 'Иваново',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-    },
-    {
-        name: 'Камчатка',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-    },
-    {
-        name: 'Холмогорский район',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-    },
-    {
-        name: 'Байкал',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-    }
-];
-
 export class Card {
 	constructor(data, cardSelector) {
 		this._text = data.name;
@@ -70,9 +42,9 @@ export class Card {
 
     generateCard() {  // публичный метод с наполнением карточки
       this._element = this._getTemplate(); // вызов клона шаблона
-
-      this._element.querySelector('.card__image').src = this._image;
-      this._element.querySelector('.card__image').alt = this._text;
+      const imageOfCard = this._element.querySelector('.card__image');
+      imageOfCard.src = this._image;
+      imageOfCard.alt = this._text;
       this._element.querySelector('.card__name').textContent = this._text;
       this._setEventListeners();
       return this._element;
