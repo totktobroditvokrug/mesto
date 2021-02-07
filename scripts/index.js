@@ -1,8 +1,9 @@
 // ---------------  импорт модулей  -----------------
 import { Card } from './Card.js'
+import Section  from './Section.js'
 import { FormValidator } from './FormValidator.js'
-import { initialCards } from './constants.js';
-import { elementsForValidation } from './constants.js';
+import { initialCards } from './constants.js'
+import { elementsForValidation } from './constants.js'
 
 const popupAreas =  Array.from(document.querySelectorAll('.popup')); // массив полей попапа
 
@@ -56,6 +57,7 @@ const onClickPopupLayout = (evt) => {
     }
 }
 
+
 function editPopupProfile() {   // 
     nameInput.value = nameProfile.textContent;  // подгружаем значения профиля
     jobInput.value = jobProfile.textContent;
@@ -91,11 +93,25 @@ buttonOpenPopupAddPlace.addEventListener("click", () => {
 buttonClosePopupAddPlace.addEventListener("click", () =>  closePopup(addPlaceFormElement));
 
 //--------------- создание карточек ---------------
+/*
 initialCards.forEach((item) => {
     const card = new Card (item, '#add-card-template');
     const cardElement =  card.generateCard();
     placeList.append(cardElement);
 }); // заливаем инициализированные карточки на страницу
+*/
+
+const cardsList = new Section({
+    items: initialCards,
+    renderer: (item) => {
+        const card = new Card (item, '#add-card-template');
+        const cardElement =  card.generateCard();
+        cardsList.addItem(cardElement);
+    }
+  },
+  '.cards'
+);
+cardsList.renderItems();
 
 function addPlace(evt) {  // добавить новую карточку по кнопке Создать
     evt.preventDefault();
@@ -121,4 +137,5 @@ formElements.forEach(form => {
 //  console.log(form);
  const formElement = new FormValidator (elementsForValidation, form);
  formElement.enableValidation();  // передаем на валидацию объект со стилями формы
+// console.log(formElement);
 });
