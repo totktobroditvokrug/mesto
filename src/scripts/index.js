@@ -1,11 +1,11 @@
 // ---------------  импорт модулей  -----------------
-import { Card } from './Card.js'
-import Section  from './Section.js'
-import { Popup, PopupWithForm, PopupWithImage } from './Popup.js'
-import { FormValidator } from './FormValidator.js'
-import { initialCards } from './constants.js'
-import { elementsForValidation } from './constants.js'
-import { UserInfo, buttonOpenPopupProfile, buttonSubmitUser, nameProfile, jobProfile, nameInput, jobInput, profileFormElement } from './UserInfo.js'
+import { Card } from '../components/Card.js'
+import Section  from '../components/Section.js'
+import { Popup, PopupWithForm, PopupWithImage } from '../components/Popup.js'
+import { FormValidator } from '../components/FormValidator.js'
+import { initialCards } from '../components/constants.js'
+import { elementsForValidation } from '../components/constants.js'
+import { UserInfo, buttonOpenPopupProfile, buttonSubmitUser, nameProfile, jobProfile, nameInput, jobInput, profileFormElement } from '../components/UserInfo.js'
 
 // const popupAreas =  Array.from(document.querySelectorAll('.popup')); // массив полей попапа
 
