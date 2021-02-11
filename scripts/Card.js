@@ -1,12 +1,15 @@
 //---------------- карточки ООП -----------------
-import { formViewImage ,buttonCloseViewImage , viewImageTitle, viewImageLink } from './index.js'
-import { openPopup } from './index.js'
 
 export class Card {
-	constructor(data, cardSelector) {
+	constructor({ data, handleCardClick }, cardSelector) {
 		this._text = data.name;
 		this._image = data.link;
+    this._handleCardClick = handleCardClick; // функция вызова просмотра карточки
 		this._cardSelector = cardSelector;
+    this._dataPreview = {
+      link: this._image,
+      title: this._text
+    }
 	}
 
 	_getTemplate() {  // клонировать по '#add-card-template'
@@ -14,7 +17,7 @@ export class Card {
       .querySelector(this._cardSelector)
       .content
       .cloneNode(true);
-
+   
     return cardElement;
     }
     
@@ -25,18 +28,15 @@ export class Card {
     _handlerDeleteCard = (evt) => {                    // удаление карточки
             evt.target.closest('.card').remove();
     }
-   
-    _handlerPreviewPicture() {            // просмотр фото
-        viewImageLink.src = this._image; 
-        viewImageTitle.textContent = this._text; 
-        viewImageLink.alt = this._text;
-        openPopup(formViewImage);
-    }
 
+   
     _setEventListeners() {  // слушатели кнопок
         this._element.querySelector('.button_type_like').addEventListener('click', this._handlerLikeIcon);
         this._element.querySelector('.button_type_trash').addEventListener('click', this._handlerDeleteCard);
-        this._element.querySelector('.card__image').addEventListener('click', () => this._handlerPreviewPicture());
+        this._element.querySelector('.card__image').addEventListener('click', () => {
+          this._handleCardClick(this._dataPreview);
+        });
+      //this._element.querySelector('.card__image').addEventListener('click', console.log('как-то вызвать просмотрщик'));
     }
    
 

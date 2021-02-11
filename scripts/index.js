@@ -1,20 +1,13 @@
 // ---------------  импорт модулей  -----------------
 import { Card } from './Card.js'
 import Section  from './Section.js'
+import { Popup, PopupWithForm, PopupWithImage } from './Popup.js'
 import { FormValidator } from './FormValidator.js'
 import { initialCards } from './constants.js'
 import { elementsForValidation } from './constants.js'
+import { UserInfo, buttonOpenPopupProfile, buttonSubmitUser, nameProfile, jobProfile, nameInput, jobInput, profileFormElement } from './UserInfo.js'
 
-const popupAreas =  Array.from(document.querySelectorAll('.popup')); // массив полей попапа
-
-// ---------------  popup редактирования юзера  -----------------
-const nameProfile = document.querySelector('.profile__name');  
-const jobProfile = document.querySelector('.profile__job');
-const profileFormElement = document.querySelector('#user-information');  // находим форму юзера
-const nameInput = profileFormElement.querySelector('#user-name'); // поле имени юзера
-const jobInput = profileFormElement.querySelector('#user-job');   // поле деятельности юзера
-const buttonOpenPopupProfile = document.querySelector('.button_type_edit');
-const buttonClosePopupProfile = profileFormElement.querySelector('.button_type_close');
+// const popupAreas =  Array.from(document.querySelectorAll('.popup')); // массив полей попапа
 
 //---------------- popup добавления места ----------------
 const buttonOpenPopupAddPlace = document.querySelector('.button_type_add');
@@ -34,7 +27,7 @@ export const viewImageLink = formViewImage.querySelector('.photo');
 
 // const addCardTemplate = document.querySelector('#add-card-template');  // поиск шаблона
 
-
+/*
 function  closePopupOnEscape (evt){  // закрытие активного попапа по Escape
     if (evt.key === 'Escape') {
       closePopup(document.querySelector('.popup_on'));
@@ -91,20 +84,89 @@ buttonOpenPopupAddPlace.addEventListener("click", () => {
 });
 
 buttonClosePopupAddPlace.addEventListener("click", () =>  closePopup(addPlaceFormElement));
-
-//--------------- создание карточек ---------------
-/*
-initialCards.forEach((item) => {
-    const card = new Card (item, '#add-card-template');
-    const cardElement =  card.generateCard();
-    placeList.append(cardElement);
-}); // заливаем инициализированные карточки на страницу
 */
 
-const cardsList = new Section({
+//--------------- работа с popup ---------------
+/*
+const userForm = new Popup (profileFormElement);
+buttonOpenPopupProfile.addEventListener("click", () =>  userForm.open());
+userForm.setEventListeners();
+// userForm.open();
+*/
+
+const placeForm = new PopupWithForm (addPlaceFormElement, (placeData) => {  // отрисовка карточки из формы
+    console.log(placeData);
+    const titleCard = placeData["place-name"];
+    const linkCard =  placeData["place-link"];
+    const formCard = new Section({ // отрисовка массива initialCards
+        items: [ {name: titleCard, link: linkCard}],
+        renderer: (item) => {
+            const card = new Card ({
+                  data: item, 
+                  handleCardClick: (previewData) => { // просмотрщик изображения карточки
+                    const imageForm = new PopupWithImage (formViewImage, previewData);
+                      imageForm.openPopup();
+                      imageForm.setEventListeners();    
+                  }
+               },
+               '#add-card-template'
+               );
+            const cardElement =  card.generateCard();
+            formCard.addItemPrepend(cardElement);
+        }
+      },
+      '.cards'
+    );
+    formCard.renderItems();
+  });
+  buttonOpenPopupAddPlace.addEventListener('click', () => {
+  placeForm.openPopup();
+  placeForm.setEventListeners();
+  console.log('открытие профиля места');
+  // старый код
+  buttonAddPlace.classList.add('button_type_inactive');
+  buttonAddPlace.disabled = true;
+});
+
+
+buttonOpenPopupProfile.addEventListener('click', () => {
+  const userInfo = new UserInfo (jobProfile, nameProfile);
+  const {
+    userProfileJob,
+    userProfileName
+  } = userInfo.getUserInfo();
+  nameInput.value = userProfileName;  // подгружаем значения профиля
+  jobInput.value =  userProfileJob;
+   console.log(userProfileName, userProfileJob);
+  const userForm = new PopupWithForm (profileFormElement, (userData) => {
+    const newName = userData["user-name"];
+    const newJob =  userData["user-job"];
+    userInfo.setUserInfo({ newElementJob: newJob, newElementName: newName })
+    console.log(userData);
+  });
+ 
+   userForm.openPopup();
+   userForm.setEventListeners();
+   console.log('открытие профиля юзера');
+   buttonSubmitUser.classList.add('button_type_inactive');
+   buttonSubmitUser.disabled = true;
+});
+
+//--------------- создание карточек ---------------
+
+const cardsList = new Section({ // отрисовка массива initialCards
     items: initialCards,
     renderer: (item) => {
-        const card = new Card (item, '#add-card-template');
+        const card = new Card ({
+              data: item, 
+              handleCardClick: (previewData) => { // просмотрщик изображения карточки
+                const imageForm = new PopupWithImage (formViewImage, previewData);
+                  imageForm.openPopup();
+                  imageForm.setEventListeners();    
+              }
+           },
+           '#add-card-template'
+           );
         const cardElement =  card.generateCard();
         cardsList.addItem(cardElement);
     }
@@ -112,23 +174,6 @@ const cardsList = new Section({
   '.cards'
 );
 cardsList.renderItems();
-
-function addPlace(evt) {  // добавить новую карточку по кнопке Создать
-    evt.preventDefault();
-    const item = {
-        name: namePlace.value,
-        link: linkPlace.value 
-    }
-    const card = new Card (item, '#add-card-template');
-    const cardElement =  card.generateCard();
-    placeList.prepend(cardElement); 
-    addPlaceFormElement.reset();
-    closePopup(addPlaceFormElement);
-}
-
-addPlaceFormElement.addEventListener("submit", addPlace);
-
-buttonCloseViewImage.addEventListener("click", () => closePopup(formViewImage));
 
 
 //--------------- валидация ------------------

@@ -35,3 +35,4 @@ export const elementsForValidation = {
     inputErrorClass: 'popup__input_type_error',
     formIsActive: 'popup_on'
 };
+
