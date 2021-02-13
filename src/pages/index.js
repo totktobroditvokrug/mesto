@@ -1,4 +1,4 @@
- import './index.css';  // для вебпака
+import './index.css';  // расскоментировать для вебпака
 
 
 // ---------------  импорт модулей  -----------------
@@ -24,15 +24,16 @@ const jobInput = profileFormElement.querySelector('#user-job');   // поле д
 const buttonOpenPopupProfile = document.querySelector('.button_type_edit');
 const buttonSubmitUser = profileFormElement.querySelector('.button_type_save');
 
-const formViewImage = document.querySelector('#view-image');  // находим блок просмотра фотографии
 
-const userInfo = new UserInfo (jobProfile, nameProfile);
+
+//------------------ инициализация формы юзера ----------------------
+
+const userInfo = new UserInfo (jobProfile, nameProfile);  // получение и запись данных пользователя
 
 const userForm = new PopupWithForm ('#user-information', (userData) => {
     const newName = userData["user-name"];
     const newJob =  userData["user-job"];
     userInfo.setUserInfo({ newElementJob: newJob, newElementName: newName })
-    console.log(userData);
   });
 userForm.setEventListeners();
 
@@ -45,28 +46,33 @@ buttonOpenPopupProfile.addEventListener('click', () => {
   jobInput.value =  userProfileJob;
 
    userForm.openPopup();
-
-   buttonSubmitUser.classList.add('button_type_inactive');
+//   buttonSubmitUser.classList.add('button_type_inactive'); // деактивация кнопки при закрытии формы без сабмита. 
    buttonSubmitUser.disabled = true;
 });
 
+//--------------- инструменты для карточек -------------------
+function createCard(item) {
+  const card = new Card ({  
+    data: item, 
+    handleCardClick: (previewData) => { // просмотрщик изображения карточки
+      imageForm.openPopup(previewData);
+    }
+ },
+ '#add-card-template'
+ );
+const cardElement = card.generateCard();
+return cardElement;
+}
+
 //--------------- создание карточек из массива ---------------
 
-const imageForm = new PopupWithImage ('#view-image');  // единственный попап просмотрщика
+const imageForm = new PopupWithImage ('#view-image'); 
+imageForm.setEventListeners(); 
 
 const cardsList = new Section({ // отрисовка массива initialCards
     items: initialCards,
     renderer: (item) => {
-        const card = new Card ({  // поскольку items - массив, создается несколько экземпляров карточек
-              data: item, 
-              handleCardClick: (previewData) => { // просмотрщик изображения карточки
-                imageForm.openPopup(previewData);
-                imageForm.setEventListeners();    
-              }
-           },
-           '#add-card-template'
-           );
-        const cardElement =  card.generateCard();
+        const cardElement = createCard(item);
         cardsList.addItem(cardElement);
     }
   },
@@ -75,35 +81,12 @@ const cardsList = new Section({ // отрисовка массива initialCard
 cardsList.renderItems(); // вызывает renderer
 
 //---------------- карточка из формы ------------------------
-
-
-
 function handleFormNewCard(newPlaceData) {  // отрисовка формы нового места
-  console.log(newPlaceData);
-  console.log('внешняя функция');
   // вытащить из newPlaceData линк и имя и залить в итемс formNewCard
 
-  const formNewCard = new Section({ // ---- как это сделать не объявляя новые Section  для меня непостижимая загадка
-    items: [{ name: newPlaceData["place-name"], link: newPlaceData["place-link"] }], // залить данные формы через глобальные переменные
-    renderer: (item) => {
-        const cardNew = new Card ({ 
-              data: item, 
-              handleCardClick: (previewData) => { // просмотрщик изображения карточки
-                imageForm.openPopup(previewData);
-                imageForm.setEventListeners();    
-              }
-           },
-           '#add-card-template'
-           );
-           const cardNewElement =  cardNew.generateCard();
-           cardsList.addItemPrepend(cardNewElement);
-    }
-  },
-  '.cards'
-  );
-  // в этот момент надо рисовать новую карточку
+  const cardNewElement = createCard({ name: newPlaceData["place-name"], link: newPlaceData["place-link"] });
 
-  formNewCard.renderItems(); // вызывает renderer для новой карточки
+  cardsList.addItemPrepend(cardNewElement); // кроме контейнера от конструктора Section ничего и не нужно!!!!
 };
 
 const placeForm = new PopupWithForm ('#place-add', handleFormNewCard);
@@ -111,10 +94,7 @@ placeForm.setEventListeners();  // запустит handleFormSubmit при са
 
 buttonOpenPopupAddPlace.addEventListener('click', () => {
 placeForm.openPopup();
-placeForm.setEventListeners();
-console.log('открытие профиля места');
-// старый код
-buttonAddPlace.classList.add('button_type_inactive');
+// buttonAddPlace.classList.add('button_type_inactive'); // деактивация кнопки при закрытии формы без сабмита. 
 buttonAddPlace.disabled = true;
 });
 
@@ -122,25 +102,6 @@ buttonAddPlace.disabled = true;
 //--------------- валидация ------------------
 const formElements = Array.from(document.querySelectorAll(elementsForValidation.formSelector));  // создаем массив форм
 formElements.forEach(form => {
-//  console.log(form);
  const formElement = new FormValidator (elementsForValidation, form);
  formElement.enableValidation();  // передаем на валидацию объект со стилями формы
-// console.log(formElement);
 });
-
-
-/*
-const cardNewPlace = new Card ({
-    data: {name: titleCard, link: linkCard}, 
-    handleCardClick: (previewData) => { // просмотрщик изображения карточки
-      console.log('handle создания карточки');
-      console.log(previewData);
-    }
-  },
-  '#add-card-template'
-  );
-  cardNewPlace.generateCard();
-// formCard.addItemPrepend(cardElement);
-//    const titleCard = placeData["place-name"];
-//    const linkCard =  placeData["place-link"];
-*/

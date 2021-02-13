@@ -5,7 +5,6 @@ export class UserInfo {
     }
 
     getUserInfo() {
-        console.log('получить данные юзера');
         return {
             userProfileJob:  this._elementJob.textContent,  // подгружаем значения профиля
             userProfileName: this._elementName.textContent

@@ -22,12 +22,10 @@ export class PopupWithForm extends Popup {
   
     setEventListeners() {
       super.setEventListeners();
-       
       this._popup.addEventListener('submit', this._methodSubmit);
     }
   
     closePopup() {
-//      this._popup.removeEventListener('submit', this._methodSubmit); // костыль против многократной отправки формы
       this._popup.reset();
       super.closePopup();
     }
