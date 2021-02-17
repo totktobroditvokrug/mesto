@@ -10,7 +10,7 @@ export class UserInfo {
             userProfileName: this._elementName.textContent
         };
     }
-    setUserInfo({newElementJob, newElementName}) {
+    setUserInfo({newElementJob, newElementName}) {  // записать в ячейки страницы новые данные
         this._elementJob.textContent = newElementJob;
         this._elementName.textContent = newElementName;
     }

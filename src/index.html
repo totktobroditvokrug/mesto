@@ -4,15 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mesto</title>
-    <!-- <link rel="stylesheet" href="pages/index.css"> -->
+    <link rel="stylesheet" href="pages/index.css">
 </head>
 <body class="page">
     <header class="header">
-        <img class="header__logo" src="<%=require('./images/header-logo.svg')%>" alt="Место">
+        <!-- <img class="header__logo" src="<%=require('./images/header-logo.svg')%>" alt="Место"> -->
+        <img class="header__logo" src="./images/header-logo.svg" alt="Место">
     </header>
     <main class="content">
         <section class="profile">
-                <img src="<%=require('./images/avatar.jpg')%>" alt="аватар" class="profile__avatar">
+                <!-- <img src="<%=require('./images/avatar.jpg')%>" alt="аватар" class="profile__avatar"> -->
+                <img src="./images/avatar.jpg" alt="аватар" class="profile__avatar">
 
                 <div class="profile__info">
                         <h1 class="profile__name">Жак-Ив Кусто</h1>
@@ -51,7 +53,7 @@
         </div>
     </form>
     <div class="popup popup_style_photo" id="view-image">
-         <button class="button button_type_close" type="button" aria-label="Удалить"></button> <!-- переформатировать верстку кнопок Х -->
+        <button class="button button_type_close" type="button" aria-label="Удалить"></button> <!-- переформатировать верстку кнопок Х -->
         <div class="popup__photo">
             <img  class="photo" src="#" alt="#">
             <h2 class="signature signature_dark"></h2>
@@ -68,7 +70,7 @@
            
         </article>  
     </template>
-   <!-- <script type="module" src="pages/index.js"></script> -->
+<script type="module" src="pages/index.js"></script>
 </body>
 </html>
 
