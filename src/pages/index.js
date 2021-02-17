@@ -31,6 +31,10 @@ function createCard(item) {
     data: item, 
     handleCardClick: (previewData) => { // просмотрщик изображения карточки
       imageForm.openPopup(previewData);
+    },
+    handleLikeClick: () => {
+      console.log(`данные карточки`);
+      console.log(item);
     }
  },
  '#add-card-template'
@@ -73,6 +77,7 @@ formElements.forEach(form => {
 
 //----------------- работа с API ----------------
 //адреса для API
+const myServerId = "f87caedede5ba1f17713b304";
 
 const baseUrl = 'https://mesto.nomoreparties.co/v1/cohort-20/';
 
@@ -124,7 +129,8 @@ cardsFromServer.then((result) => {
   for(let i=0; i < result.length; i++) {
     initialCardsServer[i] = {
       name: result[i].name,
-      link: result[i].link
+      link: result[i].link,
+      likes: result[i].likes
     }
   }
  // console.log(initialCardsServer);

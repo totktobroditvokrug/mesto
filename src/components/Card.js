@@ -1,10 +1,12 @@
 //---------------- карточки ООП -----------------
 
 export class Card {
-	constructor({ data, handleCardClick }, cardSelector) {
+	constructor({ data, handleCardClick, handleLikeClick}, cardSelector) {
 		this._text = data.name;
 		this._image = data.link;
+    this._likes = data.likes;
     this._handleCardClick = handleCardClick; // функция вызова просмотра карточки
+    this._handleLikeClick = handleLikeClick; // функция вызова лайка карточки
 		this._cardSelector = cardSelector;
     this._dataPreview = {
       link: this._image,
@@ -21,7 +23,10 @@ export class Card {
     return cardElement;
     }
     
-    _handlerLikeIcon = (evt) => {                      // реакция на лайк внутри карточки
+    _handlerLikeIcon = (evt) => {       // реакция на лайк внутри карточки
+        this._handleLikeClick();
+        console.log(this._likes.length);
+//        this._element.querySelector('.counter').textContent = this._likes.length;
         evt.target.classList.toggle('card__like_active');
         }
     
@@ -46,6 +51,7 @@ export class Card {
       imageOfCard.src = this._image;
       imageOfCard.alt = this._text;
       this._element.querySelector('.card__name').textContent = this._text;
+      this._element.querySelector('.counter').textContent = this._likes.length;
       this._setEventListeners();
       return this._element;
     }
