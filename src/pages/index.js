@@ -32,16 +32,45 @@ function createCard(item) {
     handleCardClick: (previewData) => { // просмотрщик изображения карточки
       imageForm.openPopup(previewData);
     },
-    handleLikeClick: () => {
-      console.log(`данные карточки`);
-      console.log(item);
-    }
+    handleLikeClick: handleLikeClick
  },
  '#add-card-template'
  );
-const cardElement = card.generateCard();
+const cardElement = card.generateCard(myServerId);
 return cardElement;
 }
+
+
+
+function  handleLikeClick(data, evt) {       // реакция на лайк внутри карточки
+  let cardIsLike = false; // ставим первоначально отсутствие лайка      
+        console.log(data.likes);
+        data.likes.forEach((item) => {
+          console.log(item);
+          if (item._id === myServerId) {
+            console.log('это лайк юзера');
+            cardIsLike = true;
+          }
+          else {
+            console.log('тут нет лайка юзера');
+            cardIsLike = false;
+          }
+        });
+
+        if (cardIsLike) {  // если стоял лайк юзера, снимаем его
+          api.removeLikeFromServer(data.cardId)
+          .then(console.log('лайк снят'));
+          evt.target.classList.add('card__like_active');
+          cardIsLike = false; 
+        }
+        else {                    // если лайка не было, ставим
+          evt.target.classList.remove('card__like_active');
+          api.setLikeToServer(data.cardId)
+          .then(console.log('лайк поставлен'));
+          cardIsLike = true;  
+        }
+       evt.target.classList.toggle('card__like_active');
+    }
 
 //--------------- создание карточек из массива ---------------
 
@@ -84,7 +113,7 @@ const baseUrl = 'https://mesto.nomoreparties.co/v1/cohort-20/';
 const userUrl = 'users/me';
 const cardUrl = 'cards';
 
-export const api = new Api({
+const api = new Api({
   baseUrl: baseUrl,
   headers: {
     authorization: '52d9d703-f9d4-41bc-9951-d16f2045b1bc',
