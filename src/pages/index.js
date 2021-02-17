@@ -33,43 +33,44 @@ function createCard(item) {
       imageForm.openPopup(previewData);
     },
     handleLikeClick: handleLikeClick
- },
- '#add-card-template'
- );
-const cardElement = card.generateCard(myServerId);
-return cardElement;
+  },
+  '#add-card-template'
+  );
+  const cardElement = card.generateCard(myServerId);
+  return cardElement;
 }
 
 
 
 function  handleLikeClick(data, evt) {       // реакция на лайк внутри карточки
   let cardIsLike = false; // ставим первоначально отсутствие лайка      
-        console.log(data.likes);
+        console.log(data);
+        cardIsLike = false;
         data.likes.forEach((item) => {
-          console.log(item);
+          console.log(item._id);
+          
           if (item._id === myServerId) {
             console.log('это лайк юзера');
             cardIsLike = true;
           }
           else {
             console.log('тут нет лайка юзера');
-            cardIsLike = false;
           }
         });
 
         if (cardIsLike) {  // если стоял лайк юзера, снимаем его
           api.removeLikeFromServer(data.cardId)
           .then(console.log('лайк снят'));
-          evt.target.classList.add('card__like_active');
+          evt.target.classList.remove('card__like_active');
           cardIsLike = false; 
         }
         else {                    // если лайка не было, ставим
-          evt.target.classList.remove('card__like_active');
+          evt.target.classList.add('card__like_active');
           api.setLikeToServer(data.cardId)
           .then(console.log('лайк поставлен'));
           cardIsLike = true;  
         }
-       evt.target.classList.toggle('card__like_active');
+     //  evt.target.classList.toggle('card__like_active');
     }
 
 //--------------- создание карточек из массива ---------------
@@ -121,9 +122,11 @@ const api = new Api({
   }
 });
 
+
 /*
+//-------------- тестовая функция API ---------------
 function testApi() {
-  return fetch(baseUrl + cardUrl, {
+  return fetch(baseUrl + cardUrl + '/likes', {
     headers: {
     authorization: '52d9d703-f9d4-41bc-9951-d16f2045b1bc',
     'Content-Type': 'application/json'
@@ -133,18 +136,25 @@ function testApi() {
     return res.json()
   })
   .then((result) => {
+    console.log('тестовое API');
     console.log(result);
+  })
+  .catch((err) => {
+    console.log(err);
   });
+  
 }
  testApi();
- */
+*/
 
 
 const initialCardsServer = []; // массив для получения данных карточек с сервера {name: '', link:''}
 const cardsListServer = new Section({ // отрисовка массива initialCards
   items: initialCardsServer,
   renderer: (item) => {
+    console.log(item);
       const cardElement = createCard(item);
+      console.log(cardElement);
       cardsListServer.addItem(cardElement);
   }
 },
@@ -174,17 +184,20 @@ cardsFromServer.then((result) => {
 function handleFormNewCard(newPlaceData) {  // отрисовка формы нового места
   // вытащить из newPlaceData линк и имя и залить в итемс formNewCard
 
-  const cardNewElement = createCard({ name: newPlaceData["place-name"], link: newPlaceData["place-link"] });
+//  const cardNewElement = createCard({ name: newPlaceData["place-name"], link: newPlaceData["place-link"] });
   const cardToServer = api.setNewCard(cardUrl, { name: newPlaceData["place-name"], link: newPlaceData["place-link"] });
   cardToServer
   .then((data) => {
     console.log('новая карточка успешно отправлена');
     console.log(data);
+    data.cardId = data._id;
+    const cardNewElement = createCard(data);
+    cardsListServer.addItemPrepend(cardNewElement); // кроме контейнера от конструктора Section ничего и не нужно!!!!
    })
   .catch((err) => {
      console.log(err);
    });
-  cardsListServer.addItemPrepend(cardNewElement); // кроме контейнера от конструктора Section ничего и не нужно!!!!
+ 
 };
 
 const placeForm = new PopupWithForm ('#place-add', handleFormNewCard);

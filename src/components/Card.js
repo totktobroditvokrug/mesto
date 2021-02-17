@@ -64,8 +64,21 @@ export class Card {
       //this._element.querySelector('.card__image').addEventListener('click', console.log('как-то вызвать просмотрщик'));
     }
    
-    refrechLike() {
-      
+    refrechLike(element, myServerId) {
+          //  this._element.querySelector('.counter').textContent = this._likes.length;
+      let cardIsLike = false; // ставим первоначально отсутствие лайка  
+      this._likes.forEach((item) => {
+        console.log(item);
+        if (item._id === myServerId) {
+          console.log('генерация карточки - это лайк юзера');
+          cardIsLike = true;
+          this._element.querySelector('.card__like').classList.add('card__like_active');
+        }
+        else {
+          console.log('генерация карточки - тут нет лайка юзера');
+          cardIsLike = false;
+        }
+      });
     }
     generateCard(myServerId) {  // публичный метод с наполнением карточки
       this._element = this._getTemplate(); // вызов клона шаблона
@@ -73,20 +86,7 @@ export class Card {
       imageOfCard.src = this._image;
       imageOfCard.alt = this._text;
       this._element.querySelector('.card__name').textContent = this._text;
-      this._element.querySelector('.counter').textContent = this._likes.length;
-      let cardIsLike = false; // ставим первоначально отсутствие лайка  
-      this._likes.forEach((item) => {
-        console.log(item);
-        if (item._id === myServerId) {
-          console.log('это лайк юзера');
-          cardIsLike = true;
-          this._element.querySelector('.card__like').classList.add('card__like_active');
-        }
-        else {
-          console.log('тут нет лайка юзера');
-          cardIsLike = false;
-        }
-      });
+      this.refrechLike(this._element, myServerId);
       this._setEventListeners();
       return this._element;
     }
