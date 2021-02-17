@@ -1,4 +1,6 @@
 
+const likes = 'cards/likes/';  // адрес карточки без idCard
+
 export class Api {
     constructor(config) {
       this._url = config.baseUrl;
@@ -61,7 +63,35 @@ export class Api {
             }
             return Promise.reject(`Ошибка записи юзера: ${res.status}`);
           });
-
     }
+
+    //------------- работа с лайками
+
+    setLikeToServer(cardId) {   
+      return fetch(this._url + likes + cardId, {
+        method: "PUT",
+        headers: this._headers
+      })
+    .then(res => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Ошибка записи лайка: ${res.status}`);
+      });
+    }
+
+    removeLikeFromServer(cardId) {   
+      return fetch(this._url + likes + cardId, {
+        method: "DELETE",
+        headers: this._headers
+      })
+    .then(res => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Ошибка снятия лайка: ${res.status}`);
+      });
+    }
+
     // другие методы работы с API
 }

@@ -84,7 +84,7 @@ const baseUrl = 'https://mesto.nomoreparties.co/v1/cohort-20/';
 const userUrl = 'users/me';
 const cardUrl = 'cards';
 
-const api = new Api({
+export const api = new Api({
   baseUrl: baseUrl,
   headers: {
     authorization: '52d9d703-f9d4-41bc-9951-d16f2045b1bc',
@@ -130,7 +130,8 @@ cardsFromServer.then((result) => {
     initialCardsServer[i] = {
       name: result[i].name,
       link: result[i].link,
-      likes: result[i].likes
+      likes: result[i].likes,
+      cardId: result[i]._id
     }
   }
  // console.log(initialCardsServer);
