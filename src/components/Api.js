@@ -36,6 +36,19 @@ export class Api {
       });
     }
 
+    deleteCard(cardId, cardUrl) {   
+      return fetch(this._url + cardUrl + '/' + cardId, {
+        method: "DELETE",
+        headers: this._headers
+      })
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Ошибка удаления карточки: ${res.status}`);
+      });
+    }
+
     getUserInfo(userUrl) {
         return fetch(this._url + userUrl, {
             method: "GET",

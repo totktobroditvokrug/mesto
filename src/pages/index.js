@@ -11,6 +11,7 @@ import { FormValidator } from '../components/FormValidator.js'
 import { elementsForValidation } from '../utils/constants.js'
 import { UserInfo } from '../components/UserInfo.js'
 import { Api } from '../components/Api.js'
+import { Popup } from '../components/Popup.js'
 
 //---------------- popup добавления места ----------------
 const buttonOpenPopupAddPlace = document.querySelector('.button_type_add');
@@ -24,6 +25,12 @@ const nameInput = profileFormElement.querySelector('#user-name'); // поле и
 const jobInput = profileFormElement.querySelector('#user-job');   // поле деятельности юзера
 const buttonOpenPopupProfile = document.querySelector('.button_type_edit');
 const buttonSubmitUser = profileFormElement.querySelector('.button_type_save');
+//---------------- popup подтверждения удаления карточки ----------------
+const deleteConfirmFormElement = document.querySelector('#delete-confirm');  // находим форму
+const buttonConfirm = deleteConfirmFormElement.querySelector('#button_type_confirm'); 
+//---------------- popup редактирования аватара ----------------
+const editAvatarForm = document.querySelector('#avatar-form');  // находим форму
+const buttonSaveAvatar = editAvatarForm.querySelector('#button_type_confirm'); 
 
 //--------------- инструменты для карточек -------------------
 function createCard(item) {
@@ -32,7 +39,10 @@ function createCard(item) {
     handleCardClick: (previewData) => { // просмотрщик изображения карточки
       imageForm.openPopup(previewData);
     },
-    handleLikeClick: handleLikeClick
+    deleteCardCallback: (cardId, evt) => {
+      console.log('тест колбэка');
+      deleteCard(cardId, evt);
+    }
   },
   '#add-card-template'
   );
@@ -40,65 +50,22 @@ function createCard(item) {
   return cardElement;
 }
 
-
-
-function  handleLikeClick(data, evt) {       // реакция на лайк внутри карточки
-//   console.log('обработчик лайков в index.js');
-//   // console.log(evt.target.parent);
-//   const objectLike = evt.target.closest('.card').querySelector('.counter');
-//   let cardIsLike = false; // ставим первоначально отсутствие лайка
-//         console.log('заходим в обработчик клика');      
-//         console.log(data.likes);
-//         cardIsLike = false;  // считаем, что нет лайка от юзера
-//         data.likes.forEach((item) => {  // ищем в массиве лайк от юзера
-//           console.log(item._id);
-          
-//           if (item._id === myServerId) {
-//             console.log('это лайк юзера');
-//             cardIsLike = true;
-//           }
-//           else {
-//             console.log('тут нет лайка юзера');
-//           }
-//         });
-
-//         // if (cardIsLike) {  // если стоял лайк юзера, снимаем его
-//           evt.target.classList.remove('card__like_active');
-//        return    api.removeLikeFromServer(data.cardId);  // запрос на сервер по идентификатору карточки
-//           .then((result) => {
-//              console.log(result);
-//              console.log(data);
-//              console.log('лайк снят');
-//              objectLike.textContent = result.likes.length;
-//              return result;
-//   // обновить состояние карточек ???????
-//           })
-//           .catch((result) => {
-//               console.log(result);
-//               console.log('лайк не снялся');
-//             }); 
-//         }
-//         else {                    // если лайка не было, ставим
-//           evt.target.classList.add('card__like_active');
-//       return     api.setLikeToServer(data.cardId)
-//           .then((result) => {
-//             console.log(result);
-//             console.log(data);
-//             console.log('лайк поставлен');
-//             objectLike.textContent = result.likes.length;
-//             return result;
-//  // обновить состояние карточек
-//           })
-//           .catch((result) => {
-//             console.log(result);
-//             console.log('лайк не залетел');
-//           })
-//         }
-//         console.log('незультат запроса по лайкам');
+function deleteCard(cardId, evt) { // вызовем функции апи, передадим ид карточки
+  console.log('удаление карточки');
+  confirmDel.openPopup();
+  buttonConfirm.addEventListener('click', () => {
+      api.deleteCard(cardId, cardUrl);
+      confirmDel.closePopup();
+      evt.target.closest('.card').remove();
+  });
 }
 
-//--------------- создание карточек из массива ---------------
+const confirmDel = new Popup('#delete-confirm');
+confirmDel.setEventListeners();
 
+
+
+//--------------- создание карточек из массива ---------------
 const imageForm = new PopupWithImage ('#view-image'); 
 imageForm.setEventListeners(); 
 
@@ -108,18 +75,9 @@ placeForm.openPopup();
 buttonAddPlace.disabled = true;
 });
 
-
-//--------------- валидация ------------------
-const formElements = Array.from(document.querySelectorAll(elementsForValidation.formSelector));  // создаем массив форм
-formElements.forEach(form => {
- const formElement = new FormValidator (elementsForValidation, form);
- formElement.enableValidation();  // передаем на валидацию объект со стилями формы
-});
-
-
 //----------------- работа с API ----------------
 //адреса для API
-const myServerId = "f87caedede5ba1f17713b304";
+const myServerId = "f87caedede5ba1f17713b304";  // мой идентификатор
 
 const baseUrl = 'https://mesto.nomoreparties.co/v1/cohort-20/';
 
@@ -156,8 +114,9 @@ cardsFromServer
       initialCardsServer[i] = {
         name: result[i].name,
         link: result[i].link,
-        likes: result[i].likes,
-        cardId: result[i]._id
+        likes: result[i].likes,       // массив лайков
+        cardId: result[i]._id,        // идентификатор карточки
+        userId: result[i].owner._id,  // идентификатор автора карточки
       }
     }
    // console.log(initialCardsServer);
@@ -176,8 +135,10 @@ function handleFormNewCard(newPlaceData) {  // отрисовка формы н�
   cardToServer
   .then((data) => {
     console.log('новая карточка успешно отправлена');
-    console.log(data);
+    
     data.cardId = data._id;
+    data.userId = myServerId;
+ //   console.log(data);
     const cardNewElement = createCard(data);
     cardsListServer.addItemPrepend(cardNewElement); // кроме контейнера от конструктора Section ничего и не нужно!!!!
    })
@@ -233,7 +194,19 @@ userInfoFromServer.then((user) => {
   userInfo.setUserInfo({ newElementJob: user.about, newElementName: user.name }) // положить на страницу
 })
 
-// протестировать setLikeToServer(cardId) с конкретным идентификатором
+const editAvatar = new PopupWithForm('#avatar-form', (some) => {
+  console.log(some["avatar-link"]);
+});
+editAvatar.setEventListeners();
+editAvatar.openPopup();
+
+//--------------- валидация ------------------
+const formElements = Array.from(document.querySelectorAll(elementsForValidation.formSelector));  // создаем массив форм
+formElements.forEach(form => {
+ const formElement = new FormValidator (elementsForValidation, form);
+ formElement.enableValidation();  // передаем на валидацию объект со стилями формы
+});
+
 /*
 //-------------- тестовая функция API ---------------
 function testApi() {

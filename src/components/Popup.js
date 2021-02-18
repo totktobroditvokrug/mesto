@@ -6,20 +6,18 @@ export class Popup {
   }
   
   openPopup() {
-    
+    console.log('открытие попапа');
+    console.log(this._popup);
     this._popup.classList.add(this._popupOpen);
     this._popup.addEventListener('mousedown', this._handleOverlayClose);
     document.addEventListener('keydown', this._handleEscClose);
   };
 
-  closePopup() {
-    
-
+  closePopup = () => {
     this._popup.classList.remove(this._popupOpen);
     document.removeEventListener('keydown', this._handleEscClose);
-    this._popup.removeEventListener('mousedown', this._handleOverlayClose);
-    
-  };
+    this._popup.removeEventListener('mousedown', this._handleOverlayClose);  
+  }
 
   _handleOverlayClose = (evt) => {
     if(evt.target === evt.currentTarget){
@@ -33,7 +31,6 @@ export class Popup {
   }
   
   setEventListeners() {  // слушатель клика закрытия
-    this._closeButton.addEventListener('click', this.closePopup.bind(this));
-    
+    this._closeButton.addEventListener('click', this.closePopup);
   };
 }

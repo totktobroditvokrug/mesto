@@ -1,46 +1,38 @@
 //---------------- карточки ООП -----------------
 import { api } from '../pages/index.js'
 export class Card {
-
-	constructor({ data, handleCardClick, handleLikeClick}, cardSelector) {
+	constructor({ data, handleCardClick, deleteCardCallback}, cardSelector) {
     this._data = data;
+    
 		this._text = data.name;
 		this._image = data.link;
     this._likes = data.likes;
     this._cardId = data.cardId; // идентификатор изображения с сервера
+    this._userId = data.userId;    // идентификатор юзера
     this._handleCardClick = handleCardClick; // функция вызова просмотра карточки
-    this._handleLikeClick = handleLikeClick; // функция вызова лайка карточки
- //   this._refrechLike = refrechLike;
+    this._deleteCardCallback = deleteCardCallback;  // функция удаления карточки
 		this._cardSelector = cardSelector;
     this._dataPreview = {
       link: this._image,
       title: this._text
     };
-//    this._element = '';  // тут все упадет, возможно
-//    this._cardIsLike = false;
 	}
-
+ 
 	_getTemplate() {  // клонировать по '#add-card-template'
     const cardElement = document
       .querySelector(this._cardSelector)
       .content
       .cloneNode(true);
-   
+    
     return cardElement;
     }
 
     _handlerLikeIcon = (evt) => {       // реакция на лайк внутри карточки
-      console.log('обработчик лайков в card');
       const myServerId = "f87caedede5ba1f17713b304";
-      // console.log(evt.target.parent);
       const objectLike = evt.target.closest('.card').querySelector('.counter');
       let cardIsLike = false; // ставим первоначально отсутствие лайка
-            console.log('заходим в обработчик клика');      
-            console.log(this._likes);
             cardIsLike = false;  // считаем, что нет лайка от юзера
             this._likes.forEach((item) => {  // ищем в массиве лайк от юзера
-              console.log(item._id);
-              
               if (item._id === myServerId) {
                 console.log('это лайк юзера');
                 cardIsLike = true;
@@ -54,51 +46,54 @@ export class Card {
               evt.target.classList.remove('card__like_active');
               api.removeLikeFromServer(this._cardId)  // запрос на сервер по идентификатору карточки
               .then((result) => {
-                 console.log(result);
-                 console.log(this._likes);
                  this._likes = result.likes;  // обновить состояние карточек
                  console.log('лайк снят');
                  objectLike.textContent = result.likes.length;
-                 return result;
-      // обновить состояние карточек ???????
+           //      return result;
               })
               .catch((result) => {
-                  console.log(result);
                   console.log('лайк не снялся');
                 }); 
             }
             else {                    // если лайка не было, ставим
               evt.target.classList.add('card__like_active');
-          return     api.setLikeToServer(this._cardId)
+              api.setLikeToServer(this._cardId)
               .then((result) => {
-                console.log(result); 
                 this._likes = result.likes;  // обновить состояние карточек
                 console.log('лайк поставлен');
                 objectLike.textContent = result.likes.length;
-                return result;
-     
+         //       return result;
               })
               .catch((result) => {
-                console.log(result);
                 console.log('лайк не залетел');
               })
             }
     }
 
-    refrechLike() {
-      console.log('программа обновление лайков');
-      // console.log(data);
-      // this._likes = data.likes;
-    }
 
-    _handlerDeleteCard = (evt) => {                    // удаление карточки
-            evt.target.closest('.card').remove();
+    _handleDeleteCard = (evt) => {
+  //    console.log('удаление своей карточки');
+  //    console.log(evt.target.tagName);
+      this._deleteCardCallback(this._cardId, evt);
+                      // удаление карточки
+   //         evt.target.closest('.card').remove();
+
     }
 
    
     _setEventListeners() {  // слушатели кнопок
+      const myServerId = "f87caedede5ba1f17713b304";
+   //   console.log('номер автора карточки')
+   //   console.log(this._userId);
+        if (this._userId === myServerId) {
+          console.log('это моя карточка, ставлю слушатель удаления');
+          this._element.querySelector('.button_type_trash').addEventListener('click', this._handleDeleteCard);
+        }
+        else {
+          this._element.querySelector('.button').classList.add('button_type_no-trash');
+        }
         this._element.querySelector('.button_type_like').addEventListener('click', this._handlerLikeIcon);
-        this._element.querySelector('.button_type_trash').addEventListener('click', this._handlerDeleteCard);
+  
         this._element.querySelector('.card__image').addEventListener('click', () => {
           this._handleCardClick(this._dataPreview);
         });

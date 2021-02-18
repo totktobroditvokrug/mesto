@@ -30,7 +30,7 @@
     <footer class="footer">
          <p class="footer__copyright">©2021. Енот</p>
     </footer>
-    <form class="popup" name="user-information" id="user-information" novalidate>
+    <form class="popup" name="user-information" id="user-information" novalidate>  <!-- редактирование профиля -->
         <button class="button button_type_close" type="button"></button>
         <div class="popup__container"> 
             <h2 class="popup__title">Редактировать профиль</h2>
@@ -41,7 +41,7 @@
             <button class="button button_type_save" type="submit">Сохранить</button>
         </div>
     </form>
-    <form class="popup" name="place-add" id="place-add" novalidate>
+    <form class="popup" name="place-add" id="place-add" novalidate>     <!-- добавление новой карточки -->
         <button class="button button_type_close" type="button"></button>
         <div class="popup__container">
             <h2 class="popup__title">Новое место</h2>
@@ -52,13 +52,32 @@
             <button class="button button_type_save button_type_inactive" type="submit" id="button-add-place">Создать</button>
         </div>
     </form>
-    <div class="popup popup_style_photo" id="view-image">
+    <div class="popup popup_style_photo" id="view-image">  <!-- просмотр изображения полноразмерный -->
         <button class="button button_type_close" type="button" aria-label="Удалить"></button> <!-- переформатировать верстку кнопок Х -->
         <div class="popup__photo">
             <img  class="photo" src="#" alt="#">
             <h2 class="signature signature_dark"></h2>
         </div>
     </div>
+
+    <div class="popup popup_style_confirm" name="delete-confirm" id="delete-confirm" novalidate>  <!-- подтверждение удаления карточки -->
+        <button class="button button_type_close" type="button" aria-label="Удалить"></button> <!-- переформатировать верстку кнопок Х -->
+        <div class="popup__container">
+            <h2 class="popup__title popup__title_confirm">Вы уверены?</h2>
+            <button class="button button_type_confirm" type="button" id="button_type_confirm">Да</button>
+        </div>
+    </div>
+
+    <form class="popup" name="avatar-form" id="avatar-form" novalidate>  <!-- редактирование аватара -->
+        <button class="button button_type_close" type="button"></button>
+        <div class="popup__container">
+            <h2 class="popup__title">Обновить аватар</h2>
+            <input required class="popup__input" placeholder="Ссылка на картинку" type="url" id="avatar-link" name="avatar-link">
+            <span id="avatar-link-error" class="popup__error"></span>
+            <button class="button button_type_save button_type_inactive" type="submit" id="button-add-place">Создать</button>
+        </div>
+    </form>
+
     <template id="add-card-template">
         <article class="card">
             <div class="card__wrapp">
