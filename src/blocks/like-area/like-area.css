@@ -1,0 +1,5 @@
+.like-area:hover{
+    opacity: 0.6;
+    cursor: pointer;
+    transition: linear 0.2s;
+ }

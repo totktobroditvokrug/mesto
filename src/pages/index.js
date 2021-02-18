@@ -43,10 +43,12 @@ function createCard(item) {
 
 
 function  handleLikeClick(data, evt) {       // реакция на лайк внутри карточки
+  console.log(evt.target);
+  const objectLike = evt.currentTarget.querySelector('.counter');
   let cardIsLike = false; // ставим первоначально отсутствие лайка      
         console.log(data);
-        cardIsLike = false;
-        data.likes.forEach((item) => {
+        cardIsLike = false;  // считаем, что нет лайка от юзера
+        data.likes.forEach((item) => {  // ищем в массиве лайк от юзера
           console.log(item._id);
           
           if (item._id === myServerId) {
@@ -58,37 +60,59 @@ function  handleLikeClick(data, evt) {       // реакция на лайк в�
           }
         });
 
-        if (cardIsLike) {  // если стоял лайк юзера, снимаем его
-          api.removeLikeFromServer(data.cardId)
-          .then(console.log('лайк снят'));
-          evt.target.classList.remove('card__like_active');
-          cardIsLike = false; 
-        }
-        else {                    // если лайка не было, ставим
-          evt.target.classList.add('card__like_active');
-          api.setLikeToServer(data.cardId)
-          .then(console.log('лайк поставлен'));
-          cardIsLike = true;  
-        }
+        // if (cardIsLike) {  // если стоял лайк юзера, снимаем его
+        //   api.removeLikeFromServer(data.cardId)  // запрос на сервер по идентификатору карточки
+        //   .then((result) => {
+        //      data = result;  // обновить состояние карточек
+        //      console.log(result.likes.length);
+        //      console.log('лайк снят')
+        //   });
+        //   evt.target.classList.remove('card__like_active');
+        //   cardIsLike = false;  // сбросить флаг лайка юзера
+        // }
+        // else {                    // если лайка не было, ставим
+        //   evt.target.classList.add('card__like_active');
+        //   api.setLikeToServer(data.cardId)
+        //   .then((result) => {
+        //     data = result;  // обновить состояние карточек
+        //     console.log(result.likes.length);
+        //     console.log('лайк поставлен');
+        //   });
+        //   cardIsLike = true;  
+        // }
      //  evt.target.classList.toggle('card__like_active');
-    }
+//------------ проверка
+          // evt.target.classList.add('card__like_active');
+          // api.setLikeToServer(data.cardId)
+          // .then((result) => {
+          // //  data = result;  // обновить состояние карточек
+          //   console.log(result.likes.length);
+          //   console.log('лайк поставлен');
+          // })
+          // .catch((result) => {
+          //   console.log(result);
+          //   console.log('лайк не залетел');
+          // })
+          api.removeLikeFromServer(data.cardId)  // запрос на сервер по идентификатору карточки
+          .then((result) => {
+  //           data = result;  // обновить состояние карточек
+             console.log(result.likes.length);
+             console.log('лайк снят');
+             objectLike.textContent = result.likes.length;
+          })
+          .catch((result) => {
+              console.log(result);
+              console.log('лайк не снялся');
+            });
+          evt.target.classList.remove('card__like_active');
+          
+  
+}
 
 //--------------- создание карточек из массива ---------------
 
 const imageForm = new PopupWithImage ('#view-image'); 
 imageForm.setEventListeners(); 
-/*
-const cardsList = new Section({ // отрисовка массива initialCards
-    items: initialCards,
-    renderer: (item) => {
-        const cardElement = createCard(item);
-        cardsList.addItem(cardElement);
-    }
-  },
-  '.cards'
-);
-cardsList.renderItems(); // вызывает renderer
-*/
 
 buttonOpenPopupAddPlace.addEventListener('click', () => {
 placeForm.openPopup();
@@ -122,62 +146,37 @@ const api = new Api({
   }
 });
 
-
-/*
-//-------------- тестовая функция API ---------------
-function testApi() {
-  return fetch(baseUrl + cardUrl + '/likes', {
-    headers: {
-    authorization: '52d9d703-f9d4-41bc-9951-d16f2045b1bc',
-    'Content-Type': 'application/json'
-    }
-  })
-  .then(res => {
-    return res.json()
-  })
-  .then((result) => {
-    console.log('тестовое API');
-    console.log(result);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
-  
-}
- testApi();
-*/
-
-
 const initialCardsServer = []; // массив для получения данных карточек с сервера {name: '', link:''}
 const cardsListServer = new Section({ // отрисовка массива initialCards
   items: initialCardsServer,
   renderer: (item) => {
-    console.log(item);
+//    console.log(item);
       const cardElement = createCard(item);
-      console.log(cardElement);
+//      console.log(cardElement);
       cardsListServer.addItem(cardElement);
   }
 },
 '.cards'
 );
 const cardsFromServer =  api.getInitialCards(cardUrl);
-cardsFromServer.then((result) => {
+cardsFromServer
+  .then((result) => {
  // console.log(result);
 
-  console.log('Загрузка картинок с сервера');
-  for(let i=0; i < result.length; i++) {
-    initialCardsServer[i] = {
-      name: result[i].name,
-      link: result[i].link,
-      likes: result[i].likes,
-      cardId: result[i]._id
+    console.log('Загрузка картинок с сервера: успешно');
+    for(let i=0; i < result.length; i++) {
+      initialCardsServer[i] = {
+        name: result[i].name,
+        link: result[i].link,
+        likes: result[i].likes,
+        cardId: result[i]._id
+      }
     }
-  }
- // console.log(initialCardsServer);
-  cardsListServer.renderItems(); // вызывает renderer
-})
-.catch((err) => {
-  console.log(err);
+   // console.log(initialCardsServer);
+   cardsListServer.renderItems(); // вызывает renderer
+  })
+  .catch((err) => {
+    console.log(err);
 });
 
 //---------------- карточка из формы ------------------------
@@ -246,3 +245,40 @@ userInfoFromServer.then((user) => {
   userInfo.setUserInfo({ newElementJob: user.about, newElementName: user.name }) // положить на страницу
 })
 
+// протестировать setLikeToServer(cardId) с конкретным идентификатором
+/*
+//-------------- тестовая функция API ---------------
+function testApi() {
+  return fetch(baseUrl + cardUrl + '/likes', {
+    headers: {
+    authorization: '52d9d703-f9d4-41bc-9951-d16f2045b1bc',
+    'Content-Type': 'application/json'
+    }
+  })
+  .then(res => {
+    return res.json()
+  })
+  .then((result) => {
+    console.log('тестовое API');
+    console.log(result);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+  
+}
+ testApi();
+*/
+
+/*
+const cardsList = new Section({ // отрисовка массива initialCards
+    items: initialCards,
+    renderer: (item) => {
+        const cardElement = createCard(item);
+        cardsList.addItem(cardElement);
+    }
+  },
+  '.cards'
+);
+cardsList.renderItems(); // вызывает renderer
+*/

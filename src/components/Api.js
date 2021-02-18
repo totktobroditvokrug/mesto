@@ -72,7 +72,7 @@ export class Api {
         method: "PUT",
         headers: this._headers
       })
-    .then(res => {
+      .then(res => {
         if (res.ok) {
           return res.json();
         }
@@ -85,7 +85,7 @@ export class Api {
         method: "DELETE",
         headers: this._headers
       })
-    .then(res => {
+      .then(res => {
         if (res.ok) {
           return res.json();
         }

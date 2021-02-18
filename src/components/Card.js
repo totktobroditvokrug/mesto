@@ -31,32 +31,18 @@ export class Card {
     _handlerLikeIcon = (evt) => {       // реакция на лайк внутри карточки
         this._handleLikeClick(this._data, evt);
         console.log('колбэк лайка прошел');
+    //    console.log(this.querySelector('.counter').textContent);
     //    this._element.querySelector('.counter').textContent = this._likes.length;
       // = this._likes.length;
     }
 
-    //     if (this._cardIsLike) {  // если стоял лайк юзера, снимаем его
-    //       api.removeLikeFromServer(this._cardId)
-    //       .then(console.log('лайк снят'));
-    //       evt.target.classList.add('card__like_active');
-    //       this._cardIsLike = false; 
-    //     }
-    //     else {                    // если лайка не было, ставим
-    //       evt.target.classList.remove('card__like_active');
-    //       api.setLikeToServer(this._cardId)
-    //       .then(console.log('лайк поставлен'));
-    //       this._cardIsLike = true;  
-    //     }
-    //    evt.target.classList.toggle('card__like_active');
-    // }
-    
     _handlerDeleteCard = (evt) => {                    // удаление карточки
             evt.target.closest('.card').remove();
     }
 
    
     _setEventListeners() {  // слушатели кнопок
-        this._element.querySelector('.button_type_like').addEventListener('click', this._handlerLikeIcon);
+        this._element.querySelector('.like-area').addEventListener('click', this._handlerLikeIcon);
         this._element.querySelector('.button_type_trash').addEventListener('click', this._handlerDeleteCard);
         this._element.querySelector('.card__image').addEventListener('click', () => {
           this._handleCardClick(this._dataPreview);
@@ -64,18 +50,18 @@ export class Card {
       //this._element.querySelector('.card__image').addEventListener('click', console.log('как-то вызвать просмотрщик'));
     }
    
-    refrechLike(element, myServerId) {
-          //  this._element.querySelector('.counter').textContent = this._likes.length;
+    _refrechLike(element, myServerId) {
+      element.querySelector('.counter').textContent = this._likes.length;
       let cardIsLike = false; // ставим первоначально отсутствие лайка  
       this._likes.forEach((item) => {
-        console.log(item);
+  //    console.log(item);
         if (item._id === myServerId) {
           console.log('генерация карточки - это лайк юзера');
           cardIsLike = true;
-          this._element.querySelector('.card__like').classList.add('card__like_active');
+          element.querySelector('.card__like').classList.add('card__like_active');
         }
         else {
-          console.log('генерация карточки - тут нет лайка юзера');
+      //    console.log('генерация карточки - тут нет лайка юзера');
           cardIsLike = false;
         }
       });
@@ -86,7 +72,7 @@ export class Card {
       imageOfCard.src = this._image;
       imageOfCard.alt = this._text;
       this._element.querySelector('.card__name').textContent = this._text;
-      this.refrechLike(this._element, myServerId);
+      this._refrechLike(this._element, myServerId);  // инициализация лайков
       this._setEventListeners();
       return this._element;
     }
