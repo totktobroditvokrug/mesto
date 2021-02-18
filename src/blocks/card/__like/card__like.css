@@ -1,7 +1,6 @@
 .card__like{
     grid-area: like;
-    margin-bottom: 0px;
-    margin-top: 5px;
+    margin-bottom: 20px;
     margin-right: 17px;
     margin-left: auto;
 }

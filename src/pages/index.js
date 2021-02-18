@@ -43,70 +43,58 @@ function createCard(item) {
 
 
 function  handleLikeClick(data, evt) {       // реакция на лайк внутри карточки
-  console.log(evt.target);
-  const objectLike = evt.currentTarget.querySelector('.counter');
-  let cardIsLike = false; // ставим первоначально отсутствие лайка      
-        console.log(data);
-        cardIsLike = false;  // считаем, что нет лайка от юзера
-        data.likes.forEach((item) => {  // ищем в массиве лайк от юзера
-          console.log(item._id);
+//   console.log('обработчик лайков в index.js');
+//   // console.log(evt.target.parent);
+//   const objectLike = evt.target.closest('.card').querySelector('.counter');
+//   let cardIsLike = false; // ставим первоначально отсутствие лайка
+//         console.log('заходим в обработчик клика');      
+//         console.log(data.likes);
+//         cardIsLike = false;  // считаем, что нет лайка от юзера
+//         data.likes.forEach((item) => {  // ищем в массиве лайк от юзера
+//           console.log(item._id);
           
-          if (item._id === myServerId) {
-            console.log('это лайк юзера');
-            cardIsLike = true;
-          }
-          else {
-            console.log('тут нет лайка юзера');
-          }
-        });
+//           if (item._id === myServerId) {
+//             console.log('это лайк юзера');
+//             cardIsLike = true;
+//           }
+//           else {
+//             console.log('тут нет лайка юзера');
+//           }
+//         });
 
-        // if (cardIsLike) {  // если стоял лайк юзера, снимаем его
-        //   api.removeLikeFromServer(data.cardId)  // запрос на сервер по идентификатору карточки
-        //   .then((result) => {
-        //      data = result;  // обновить состояние карточек
-        //      console.log(result.likes.length);
-        //      console.log('лайк снят')
-        //   });
-        //   evt.target.classList.remove('card__like_active');
-        //   cardIsLike = false;  // сбросить флаг лайка юзера
-        // }
-        // else {                    // если лайка не было, ставим
-        //   evt.target.classList.add('card__like_active');
-        //   api.setLikeToServer(data.cardId)
-        //   .then((result) => {
-        //     data = result;  // обновить состояние карточек
-        //     console.log(result.likes.length);
-        //     console.log('лайк поставлен');
-        //   });
-        //   cardIsLike = true;  
-        // }
-     //  evt.target.classList.toggle('card__like_active');
-//------------ проверка
-          // evt.target.classList.add('card__like_active');
-          // api.setLikeToServer(data.cardId)
-          // .then((result) => {
-          // //  data = result;  // обновить состояние карточек
-          //   console.log(result.likes.length);
-          //   console.log('лайк поставлен');
-          // })
-          // .catch((result) => {
-          //   console.log(result);
-          //   console.log('лайк не залетел');
-          // })
-          api.removeLikeFromServer(data.cardId)  // запрос на сервер по идентификатору карточки
-          .then((result) => {
-  //           data = result;  // обновить состояние карточек
-             console.log(result.likes.length);
-             console.log('лайк снят');
-             objectLike.textContent = result.likes.length;
-          })
-          .catch((result) => {
-              console.log(result);
-              console.log('лайк не снялся');
-            });
-          evt.target.classList.remove('card__like_active');
-          
-  
+//         // if (cardIsLike) {  // если стоял лайк юзера, снимаем его
+//           evt.target.classList.remove('card__like_active');
+//        return    api.removeLikeFromServer(data.cardId);  // запрос на сервер по идентификатору карточки
+//           .then((result) => {
+//              console.log(result);
+//              console.log(data);
+//              console.log('лайк снят');
+//              objectLike.textContent = result.likes.length;
+//              return result;
+//   // обновить состояние карточек ???????
+//           })
+//           .catch((result) => {
+//               console.log(result);
+//               console.log('лайк не снялся');
+//             }); 
+//         }
+//         else {                    // если лайка не было, ставим
+//           evt.target.classList.add('card__like_active');
+//       return     api.setLikeToServer(data.cardId)
+//           .then((result) => {
+//             console.log(result);
+//             console.log(data);
+//             console.log('лайк поставлен');
+//             objectLike.textContent = result.likes.length;
+//             return result;
+//  // обновить состояние карточек
+//           })
+//           .catch((result) => {
+//             console.log(result);
+//             console.log('лайк не залетел');
+//           })
+//         }
+//         console.log('незультат запроса по лайкам');
 }
 
 //--------------- создание карточек из массива ---------------
@@ -138,7 +126,7 @@ const baseUrl = 'https://mesto.nomoreparties.co/v1/cohort-20/';
 const userUrl = 'users/me';
 const cardUrl = 'cards';
 
-const api = new Api({
+export const api = new Api({
   baseUrl: baseUrl,
   headers: {
     authorization: '52d9d703-f9d4-41bc-9951-d16f2045b1bc',
