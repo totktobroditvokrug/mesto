@@ -30,9 +30,12 @@ const deleteConfirmFormElement = document.querySelector('#delete-confirm');  // 
 const buttonConfirm = deleteConfirmFormElement.querySelector('#button_type_confirm'); 
 //---------------- popup редактирования аватара ----------------
 const editAvatarForm = document.querySelector('#avatar-form');  // находим форму
-const buttonSaveAvatar = editAvatarForm.querySelector('#button_type_confirm'); 
+const buttonSaveAvatar = editAvatarForm.querySelector('.button_type_save'); 
 
+//---------------- активация редактирования аватара -------------
+const editAvatarPen = document.querySelector('.avatar-edit');  // находим обертку аватара
 const avatarOnProfile = document.querySelector('.profile__avatar');  // аватар в профиле страницы
+
 
 //--------------- инструменты для карточек -------------------
 function createCard(item) {
@@ -75,7 +78,7 @@ imageForm.setEventListeners();
 
 buttonOpenPopupAddPlace.addEventListener('click', () => {
 placeForm.openPopup();
-// buttonAddPlace.classList.add('button_type_inactive'); // деактивация кнопки при закрытии формы без сабмита. 
+buttonAddPlace.classList.add('button_type_inactive'); // деактивация кнопки при закрытии формы без сабмита. 
 buttonAddPlace.disabled = true;
 });
 
@@ -187,7 +190,7 @@ buttonOpenPopupProfile.addEventListener('click', () => {
   jobInput.value =  userProfileJob;
 
    userForm.openPopup();
-//   buttonSubmitUser.classList.add('button_type_inactive'); // деактивация кнопки при закрытии формы без сабмита. 
+   buttonSubmitUser.classList.add('button_type_inactive'); // деактивация кнопки при закрытии формы без сабмита. 
    buttonSubmitUser.disabled = true;
 });
 
@@ -216,7 +219,12 @@ const editAvatar = new PopupWithForm('#avatar-form', (user) => {
   });
 });
 editAvatar.setEventListeners();
-editAvatar.openPopup();
+editAvatarPen.addEventListener('click', () => {
+  editAvatar.openPopup();
+  buttonSaveAvatar.classList.add('button_type_inactive'); // деактивация кнопки при закрытии формы без сабмита. 
+  buttonSaveAvatar.disabled = true;
+});
+
 
 //--------------- валидация ------------------
 const formElements = Array.from(document.querySelectorAll(elementsForValidation.formSelector));  // создаем массив форм

@@ -1,0 +1,25 @@
+.avatar-edit{
+    margin-right: 29px;
+    margin-bottom: 0px;
+    width: 120px;
+    height: 120px;
+    opacity: 0;
+    cursor: pointer;
+    transition: linear 0.2s;
+    background-color: rgba(0, 0, 0, 0.5);
+    background-image: url(../../../src/images/edit-avatar-pen.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    position: absolute;
+    z-index: 1;
+}
+.avatar-edit:hover{
+    opacity: 1;
+    transition: linear 0.2s; 
+}
+@media screen and (max-width: 700px) {
+    .avatar-edit{
+        margin-right: 0;
+        margin-bottom: 170px;
+    }
+}
