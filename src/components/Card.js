@@ -1,7 +1,7 @@
 //---------------- карточки ООП -----------------
 import { api } from '../pages/index.js'
 export class Card {
-	constructor({ data, handleCardClick, deleteCardCallback}, cardSelector) {
+	constructor({ data, handleCardClick, deleteCardCallback, updateCardView}, cardSelector) {
     this._data = data;
     
 		this._text = data.name;
@@ -11,6 +11,7 @@ export class Card {
     this._userId = data.userId;    // идентификатор юзера
     this._handleCardClick = handleCardClick; // функция вызова просмотра карточки
     this._deleteCardCallback = deleteCardCallback;  // функция удаления карточки
+    this._updateCardView = updateCardView;  // пригодится
 		this._cardSelector = cardSelector;
     this._dataPreview = {
       link: this._image,

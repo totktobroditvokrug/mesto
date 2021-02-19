@@ -36,7 +36,7 @@ export class Api {
       });
     }
 
-    deleteCard(cardId, cardUrl) {   
+    deleteCard(cardId, cardUrl) {   // удаление карточки
       return fetch(this._url + cardUrl + '/' + cardId, {
         method: "DELETE",
         headers: this._headers
@@ -49,7 +49,7 @@ export class Api {
       });
     }
 
-    getUserInfo(userUrl) {
+    getUserInfo(userUrl) {  // вернет юзера с сервера
         return fetch(this._url + userUrl, {
             method: "GET",
             headers: this._headers
@@ -62,7 +62,7 @@ export class Api {
           });
     }
 
-    setUserInfo(userUrl, data) {
+    setUserInfo(userUrl, data) {  // закинет юзера на сервер
         return fetch(this._url + userUrl, {
             method: "PATCH",
             headers: this._headers,
@@ -77,6 +77,24 @@ export class Api {
             return Promise.reject(`Ошибка записи юзера: ${res.status}`);
           });
     }
+
+    setAvatar(avatarURL, data) {  // закинет юзера на сервер
+      return fetch(this._url + avatarURL, {
+          method: "PATCH",
+          headers: this._headers,
+          body: JSON.stringify(
+            {
+                "avatar": data
+            }
+            )
+      })
+      .then(res => {
+          if (res.ok) {
+            return res.json();
+          }
+          return Promise.reject(`Ошибка записи аватара: ${res.status}`);
+        });
+  }
 
     //------------- работа с лайками
 

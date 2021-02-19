@@ -32,6 +32,8 @@ const buttonConfirm = deleteConfirmFormElement.querySelector('#button_type_confi
 const editAvatarForm = document.querySelector('#avatar-form');  // находим форму
 const buttonSaveAvatar = editAvatarForm.querySelector('#button_type_confirm'); 
 
+const avatarOnProfile = document.querySelector('.profile__avatar');  // аватар в профиле страницы
+
 //--------------- инструменты для карточек -------------------
 function createCard(item) {
   const card = new Card ({  
@@ -40,9 +42,11 @@ function createCard(item) {
       imageForm.openPopup(previewData);
     },
     deleteCardCallback: (cardId, evt) => {
-      console.log('тест колбэка');
       deleteCard(cardId, evt);
-    }
+    },
+    updateCardView: () => {
+
+    },
   },
   '#add-card-template'
   );
@@ -76,13 +80,14 @@ buttonAddPlace.disabled = true;
 });
 
 //----------------- работа с API ----------------
-//адреса для API
+// адреса для API (перенести в константы и экспортировать в кард и индекс)
 const myServerId = "f87caedede5ba1f17713b304";  // мой идентификатор
 
 const baseUrl = 'https://mesto.nomoreparties.co/v1/cohort-20/';
 
 const userUrl = 'users/me';
 const cardUrl = 'cards';
+const avatarURL = userUrl + '/avatar';
 
 export const api = new Api({
   baseUrl: baseUrl,
@@ -189,13 +194,26 @@ buttonOpenPopupProfile.addEventListener('click', () => {
 //-------------- работа сервера с данными юзера -----------------------
 
 const userInfoFromServer =  api.getUserInfo(userUrl);
-userInfoFromServer.then((user) => {
+userInfoFromServer
+.then((user) => {
   console.log(user);
   userInfo.setUserInfo({ newElementJob: user.about, newElementName: user.name }) // положить на страницу
+  avatarOnProfile.src =  user.avatar;
 })
+.catch((err) => {
+  console.log(err);
+});
 
-const editAvatar = new PopupWithForm('#avatar-form', (some) => {
-  console.log(some["avatar-link"]);
+const editAvatar = new PopupWithForm('#avatar-form', (user) => {
+  console.log(user["avatar-link"]);
+  api.setAvatar(avatarURL, user["avatar-link"])
+  .then(res => {
+    console.log(`аватар обновлен: ${res}`);
+    avatarOnProfile.src =  user["avatar-link"];
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 });
 editAvatar.setEventListeners();
 editAvatar.openPopup();
