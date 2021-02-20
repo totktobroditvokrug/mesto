@@ -46,6 +46,9 @@ export class Api {
           return res.json();
         }
         return Promise.reject(`Ошибка удаления карточки: ${res.status}`);
+      })
+      .catch((err) => {
+        console.log(err);
       });
     }
 
@@ -75,6 +78,9 @@ export class Api {
               return res.json();
             }
             return Promise.reject(`Ошибка записи юзера: ${res.status}`);
+          })
+          .catch((err) => {
+            console.log(err);
           });
     }
 
@@ -93,6 +99,9 @@ export class Api {
             return res.json();
           }
           return Promise.reject(`Ошибка записи аватара: ${res.status}`);
+        })
+        .catch((err) => {
+          console.log(err);
         });
   }
 
@@ -108,6 +117,9 @@ export class Api {
           return res.json();
         }
         return Promise.reject(`Ошибка записи лайка: ${res.status}`);
+      })
+      .catch((err) => {
+        console.log(err);
       });
     }
 
@@ -121,6 +133,9 @@ export class Api {
           return res.json();
         }
         return Promise.reject(`Ошибка снятия лайка: ${res.status}`);
+      })
+      .catch((err) => {
+        console.log(err);
       });
     }
 

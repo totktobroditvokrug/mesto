@@ -60,20 +60,24 @@ function createCard(item) {
 function deleteCardOnServer(cardId, evt) { // вызовем функции апи, передадим ид карточки
   console.log('удаление карточки');
   confirmDel.openPopup();
+  
   function apiDelCard() {
-      api.deleteCard(cardId, cardUrl);
+      document.removeEventListener('keydown', handleEnter);
+      api.deleteCard(cardId, cardUrl)
       confirmDel.closePopup();
       evt.target.closest('.card').remove();
   }
 
   // ожидание клика по кнопке подтверждений или Enter
-  document.addEventListener('keydown',  (evt) => {
-  evt.preventDefault();
-   console.log(`нажатие клавиши ${evt.key}`);
+  const handleEnter = (evt) => {
+      evt.preventDefault();
   if (evt.key === 'Enter') {
+
     apiDelCard();
     }  
-});
+  }
+  document.addEventListener('keydown',  handleEnter);
+
   buttonConfirm.addEventListener('click', () => {
     apiDelCard();
   });
@@ -81,18 +85,6 @@ function deleteCardOnServer(cardId, evt) { // вызовем функции ап
 
 const confirmDel = new Popup('#delete-confirm');
 confirmDel.setEventListeners();
-
-
-
-//--------------- создание карточек из массива ---------------
-const imageForm = new PopupWithImage ('#view-image'); 
-imageForm.setEventListeners(); 
-
-buttonOpenPopupAddPlace.addEventListener('click', () => {
-placeForm.openPopup();
-buttonAddPlace.classList.add('button_type_inactive'); // деактивация кнопки при закрытии формы без сабмита. 
-buttonAddPlace.disabled = true;
-});
 
 //----------------- работа с API ----------------
 // адреса для API (перенести в константы и экспортировать в кард и индекс)
@@ -146,36 +138,46 @@ cardsFromServer
     console.log(err);
 });
 
-//---------------- карточка из формы ------------------------
-function handleFormNewCard(newPlaceData) {  // отрисовка формы нового места
-  // вытащить из newPlaceData линк и имя и залить в итемс formNewCard
+//--------------- форма создания карточки ---------------
+const imageForm = new PopupWithImage ('#view-image'); 
+imageForm.setEventListeners(); 
 
+buttonOpenPopupAddPlace.addEventListener('click', () => {
+  buttonAddPlace.textContent = 'Создать карточку';  // снять значение UX и записать стандартное
+  buttonAddPlace.classList.add('button_type_inactive'); // деактивация кнопки при закрытии формы без сабмита. 
+  buttonAddPlace.disabled = true;
+  placeForm.openPopup();
+});
+
+//---------------- карточка из формы ------------------------
+function handleNewCard(newPlaceData) {  // отрисовка формы нового места
+  // вытащить из newPlaceData линк и имя и залить в итемс formNewCard
+    buttonAddPlace.textContent = 'Сохранение...';  // UX
 //  const cardNewElement = createCard({ name: newPlaceData["place-name"], link: newPlaceData["place-link"] });
   const cardToServer = api.setNewCard(cardUrl, { name: newPlaceData["place-name"], link: newPlaceData["place-link"] });
   cardToServer
   .then((data) => {
     console.log('новая карточка успешно отправлена');
-    
     data.cardId = data._id;
     data.userId = myServerId;
- //   console.log(data);
     const cardNewElement = createCard(data);
-    cardsListServer.addItemPrepend(cardNewElement); // кроме контейнера от конструктора Section ничего и не нужно!!!!
+    cardsListServer.addItemPrepend(cardNewElement);
+    placeForm.closePopup();
    })
   .catch((err) => {
      console.log(err);
    });
- 
 };
 
-const placeForm = new PopupWithForm ('#place-add', handleFormNewCard);
+const placeForm = new PopupWithForm ('#place-add', handleNewCard);
 placeForm.setEventListeners();  // запустит handleFormSubmit при сабмите и закроется форма
 
 //------------------ инициализация формы юзера ----------------------
 
 const userInfo = new UserInfo (jobProfile, nameProfile);  // элементы для данных пользователя
 
-const userForm = new PopupWithForm ('#user-information', (userData) => {  // считываем данные из формы
+const userForm = new PopupWithForm ('#user-information', (userData) => {  // считываем данные из формы при отправке
+    buttonSubmitUser.textContent = 'Сохранение...';  // UX
     const newName = userData["user-name"];
     const newJob =  userData["user-job"];
     api.setUserInfo(userUrl, {
@@ -184,10 +186,13 @@ const userForm = new PopupWithForm ('#user-information', (userData) => {  // с�
     } // отправить данные на сервер
     )
       .then((data) => {
+        buttonSubmitUser.textContent = 'Сохранить';  // UX
         console.log(data);
+        userForm.closePopup();
        })
       .catch((err) => {
          console.log(err);
+         buttonSubmitUser.textContent = 'Сохранить еще раз';  // UX
        });
     userInfo.setUserInfo({ newElementJob: newJob, newElementName: newName })
   });
@@ -219,22 +224,27 @@ userInfoFromServer
   console.log(err);
 });
 
-const editAvatar = new PopupWithForm('#avatar-form', (user) => {
-  console.log(user["avatar-link"]);
+const editAvatar = new PopupWithForm('#avatar-form', (user) => {  // => колбэк сабмита
+  console.log(buttonSaveAvatar.textContent);
+  buttonSaveAvatar.textContent = 'Сохранение...';  // UX
   api.setAvatar(avatarURL, user["avatar-link"])
   .then(res => {
     console.log(`аватар обновлен: ${res}`);
     avatarOnProfile.src =  user["avatar-link"];
+    editAvatar.closePopup();
   })
   .catch((err) => {
     console.log(err);
+    buttonSaveAvatar.textContent = 'Создать еще раз';  // UX при ошибке обновления
   });
 });
 editAvatar.setEventListeners();
 editAvatarPen.addEventListener('click', () => {
-  editAvatar.openPopup();
+  buttonSaveAvatar.textContent = 'Сохранить аватар';  // UX
   buttonSaveAvatar.classList.add('button_type_inactive'); // деактивация кнопки при закрытии формы без сабмита. 
   buttonSaveAvatar.disabled = true;
+  editAvatar.openPopup();
+
 });
 
 

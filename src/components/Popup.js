@@ -6,8 +6,6 @@ export class Popup {
   }
   
   openPopup() {
-    console.log('открытие попапа');
-    console.log(this._popup);
     this._popup.classList.add(this._popupOpen);
     this._popup.addEventListener('mousedown', this._handleOverlayClose);
     document.addEventListener('keydown', this._handleEscClose);
