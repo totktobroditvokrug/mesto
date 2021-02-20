@@ -1,9 +1,6 @@
 .button_type_no-trash {
-    opacity: 0.2;
-    cursor: default; 
+    opacity: 0;
 }
-
 .button_type_no-trash:hover {
-    opacity: 0.2;
-    cursor: default; 
+    opacity: 0;
 }

@@ -47,6 +47,8 @@ export const elementsForValidation = {
 
 // константы для работы с сервером
 export const myServerId = "f87caedede5ba1f17713b304";
+
+export const baseUrl = 'https://mesto.nomoreparties.co/v1/cohort-20/';
 export const userUrl = 'users/me';
 export const cardUrl = 'cards';
 export const avatarUrl = userUrl + '/avatar';

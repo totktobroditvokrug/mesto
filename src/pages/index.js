@@ -1,4 +1,4 @@
-// import './index.css';  // расскоментировать для вебпака
+import './index.css';  // расскоментировать для вебпака
 
 
 // ---------------  импорт модулей  -----------------
@@ -11,7 +11,7 @@ import { elementsForValidation } from '../utils/constants.js'
 import { UserInfo } from '../components/UserInfo.js'
 import { Api } from '../components/Api.js'
 import { Popup } from '../components/Popup.js'
-import { myServerId } from '../utils/constants.js'
+import { myServerId, baseUrl } from '../utils/constants.js'
 
 //---------------- popup добавления места ----------------
 const buttonOpenPopupAddPlace = document.querySelector('.button_type_add');
@@ -74,11 +74,10 @@ function deleteCardOnServer(cardId, evt) { // вызовем функции ап
       evt.target.closest('.card').remove();
   }
 
-  // ожидание клика по кнопке подтверждений или Enter
+  // ожидание клика по кнопке подтверждений или Enter для удаления карточки
   const handleEnter = (evt) => {
       evt.preventDefault();
   if (evt.key === 'Enter') {
-
     apiDelCard();
     }  
   }
@@ -93,10 +92,6 @@ const confirmDel = new Popup('#delete-confirm');
 confirmDel.setEventListeners();
 
 //----------------- работа с API ----------------
-// адреса для API (перенести в константы и экспортировать в кард и индекс)
-
-const baseUrl = 'https://mesto.nomoreparties.co/v1/cohort-20/';
-
 
 export const api = new Api({
   baseUrl: baseUrl,
@@ -177,15 +172,12 @@ const placeForm = new PopupWithForm ('#place-add', handleNewCard);
 placeForm.setEventListeners();  // запустит handleFormSubmit при сабмите и закроется форма
 
 //----------------- работа с лайками ----------------
-
 function handleLikeOnServer(cardId, likes, evt) {
   console.log(evt.target.tagName);
   console.log(cardId);
 }
 
-
 //------------------ инициализация формы юзера ----------------------
-
 const userInfo = new UserInfo (jobProfile, nameProfile);  // элементы для данных пользователя
 
 const userForm = new PopupWithForm ('#user-information', (userData) => {  // считываем данные из формы при отправке
@@ -224,7 +216,6 @@ buttonOpenPopupProfile.addEventListener('click', () => {
 });
 
 //-------------- работа сервера с данными юзера -----------------------
-
 const userInfoFromServer =  api.getUserInfo();
 userInfoFromServer
 .then((user) => {
@@ -256,9 +247,7 @@ editAvatarPen.addEventListener('click', () => {
   buttonSaveAvatar.classList.add('button_type_inactive'); // деактивация кнопки при закрытии формы без сабмита. 
   buttonSaveAvatar.disabled = true;
   editAvatar.openPopup();
-
 });
-
 
 //--------------- валидация ------------------
 const formElements = Array.from(document.querySelectorAll(elementsForValidation.formSelector));  // создаем массив форм
@@ -266,40 +255,3 @@ formElements.forEach(form => {
  const formElement = new FormValidator (elementsForValidation, form);
  formElement.enableValidation();  // передаем на валидацию объект со стилями формы
 });
-
-/*
-//-------------- тестовая функция API ---------------
-function testApi() {
-  return fetch(baseUrl + cardUrl + '/likes', {
-    headers: {
-    authorization: '52d9d703-f9d4-41bc-9951-d16f2045b1bc',
-    'Content-Type': 'application/json'
-    }
-  })
-  .then(res => {
-    return res.json()
-  })
-  .then((result) => {
-    console.log('тестовое API');
-    console.log(result);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
-  
-}
- testApi();
-*/
-
-/*
-const cardsList = new Section({ // отрисовка массива initialCards
-    items: initialCards,
-    renderer: (item) => {
-        const cardElement = createCard(item);
-        cardsList.addItem(cardElement);
-    }
-  },
-  '.cards'
-);
-cardsList.renderItems(); // вызывает renderer
-*/

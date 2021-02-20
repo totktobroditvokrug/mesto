@@ -77,7 +77,6 @@ export class Card {
     }
  
     _setEventListeners() {  // слушатели кнопок
-      const myServerId = "f87caedede5ba1f17713b304";
         if (this._userId === myServerId) {
           console.log('это моя карточка, ставлю слушатель удаления');
           this._element.querySelector('.button_type_trash').addEventListener('click', this._handleDeleteCard);
@@ -96,14 +95,12 @@ export class Card {
       element.querySelector('.counter').textContent = this._likes.length;
       let cardIsLike = false; // ставим первоначально отсутствие лайка  
       this._likes.forEach((item) => {
-  //    console.log(item);
         if (item._id === myServerId) {
           console.log('генерация карточки - это лайк юзера');
           cardIsLike = true;
           element.querySelector('.card__like').classList.add('card__like_active');
         }
         else {
-      //    console.log('генерация карточки - тут нет лайка юзера');
           cardIsLike = false;
         }
       });

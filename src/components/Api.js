@@ -83,7 +83,7 @@ export class Api {
           });
     }
 
-    setAvatar(data) {  // закинет юзера на сервер
+    setAvatar(data) {  // закинет аватар на сервер
       return fetch(this._url + avatarUrl, {
           method: "PATCH",
           headers: this._headers,
@@ -105,7 +105,6 @@ export class Api {
   }
 
     //------------- работа с лайками
-
     setLikeToServer(cardId) {   
       return fetch(this._url + likesUrl + cardId, {
         method: "PUT",
