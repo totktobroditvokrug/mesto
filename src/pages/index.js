@@ -45,7 +45,7 @@ function createCard(item) {
       imageForm.openPopup(previewData);
     },
     deleteCardCallback: (cardId, evt) => {
-      deleteCard(cardId, evt);
+      deleteCardOnServer(cardId, evt);
     },
     updateCardView: () => {
 
@@ -57,13 +57,25 @@ function createCard(item) {
   return cardElement;
 }
 
-function deleteCard(cardId, evt) { // вызовем функции апи, передадим ид карточки
+function deleteCardOnServer(cardId, evt) { // вызовем функции апи, передадим ид карточки
   console.log('удаление карточки');
   confirmDel.openPopup();
-  buttonConfirm.addEventListener('click', () => {
+  function apiDelCard() {
       api.deleteCard(cardId, cardUrl);
       confirmDel.closePopup();
       evt.target.closest('.card').remove();
+  }
+
+  // ожидание клика по кнопке подтверждений или Enter
+  document.addEventListener('keydown',  (evt) => {
+  evt.preventDefault();
+   console.log(`нажатие клавиши ${evt.key}`);
+  if (evt.key === 'Enter') {
+    apiDelCard();
+    }  
+});
+  buttonConfirm.addEventListener('click', () => {
+    apiDelCard();
   });
 }
 

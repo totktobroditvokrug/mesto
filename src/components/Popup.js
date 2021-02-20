@@ -29,7 +29,7 @@ export class Popup {
         this.closePopup();
       }  
   }
-  
+
   setEventListeners() {  // слушатель клика закрытия
     this._closeButton.addEventListener('click', this.closePopup);
   };
