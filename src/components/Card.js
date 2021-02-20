@@ -1,5 +1,5 @@
 //---------------- карточки ООП -----------------
-import { api } from '../pages/index.js'
+import { myServerId, userUrl, cardUrl, avatarUrl } from '../utils/constants.js'
 export class Card {
 	constructor({ data, handleCardClick, deleteCardCallback, updateCardView, removeLikeFromServer, setLikeToServer}, cardSelector) {
     this._data = data;
@@ -30,10 +30,7 @@ export class Card {
     return cardElement;
     }
 
-
-    // убрать подмешивание класса
     _handlerLikeIcon = (evt) => {       // реакция на лайк внутри карточки
-      const myServerId = "f87caedede5ba1f17713b304";
       const objectLike = evt.target.closest('.card').querySelector('.counter');
       let cardIsLike = false; // ставим первоначально отсутствие лайка
             cardIsLike = false;  // считаем, что нет лайка от юзера
@@ -54,10 +51,10 @@ export class Card {
                  this._likes = result.likes;  // обновить состояние карточек
                  console.log('лайк снят');
                  objectLike.textContent = result.likes.length;
-           //      return result;
               })
-              .catch((result) => {
+              .catch((err) => {
                   console.log('лайк не снялся');
+                  console.log(err);
                 }); 
             }
             else {                    // если лайка не было, ставим
@@ -67,29 +64,20 @@ export class Card {
                 this._likes = result.likes;  // обновить состояние карточек
                 console.log('лайк поставлен');
                 objectLike.textContent = result.likes.length;
-         //       return result;
               })
-              .catch((result) => {
+              .catch((err) => {
                 console.log('лайк не залетел');
+                console.log(err);
               })
             }
     }
 
-
     _handleDeleteCard = (evt) => {
-  //    console.log('удаление своей карточки');
-  //    console.log(evt.target.tagName);
       this._deleteCardCallback(this._cardId, evt);
-                      // удаление карточки
-   //         evt.target.closest('.card').remove();
-
     }
-
-   
+ 
     _setEventListeners() {  // слушатели кнопок
       const myServerId = "f87caedede5ba1f17713b304";
-   //   console.log('номер автора карточки')
-   //   console.log(this._userId);
         if (this._userId === myServerId) {
           console.log('это моя карточка, ставлю слушатель удаления');
           this._element.querySelector('.button_type_trash').addEventListener('click', this._handleDeleteCard);
@@ -102,7 +90,6 @@ export class Card {
         this._element.querySelector('.card__image').addEventListener('click', () => {
           this._handleCardClick(this._dataPreview);
         });
-      //this._element.querySelector('.card__image').addEventListener('click', console.log('как-то вызвать просмотрщик'));
     }
    
     _loadLike(element, myServerId) {
@@ -121,7 +108,6 @@ export class Card {
         }
       });
     }
-
 
     generateCard(myServerId) {  // публичный метод с наполнением карточки
       this._element = this._getTemplate(); // вызов клона шаблона

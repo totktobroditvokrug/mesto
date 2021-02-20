@@ -1,5 +1,4 @@
-
-const likes = 'cards/likes/';  // адрес карточки без idCard
+import { myServerId, userUrl, cardUrl, avatarUrl, likesUrl } from '../utils/constants.js'
 
 export class Api {
     constructor(config) {
@@ -7,7 +6,7 @@ export class Api {
       this._headers = config.headers;
     }
 
-    getInitialCards(cardUrl) {  // получить массив карточек с сервера
+    getInitialCards() {  // получить массив карточек с сервера
         return fetch(this._url + cardUrl, {
             method: "GET",
             headers: this._headers
@@ -20,7 +19,7 @@ export class Api {
           });
     }
 
-    setNewCard(cardUrl, data) { // закинуть новую карточку на сервер
+    setNewCard(data) { // закинуть новую карточку на сервер
       return fetch(this._url + cardUrl, {
         method: "POST",
         headers: this._headers,
@@ -36,7 +35,7 @@ export class Api {
       });
     }
 
-    deleteCard(cardId, cardUrl) {   // удаление карточки
+    deleteCard(cardId) {   // удаление карточки
       return fetch(this._url + cardUrl + '/' + cardId, {
         method: "DELETE",
         headers: this._headers
@@ -52,7 +51,7 @@ export class Api {
       });
     }
 
-    getUserInfo(userUrl) {  // вернет юзера с сервера
+    getUserInfo() {  // вернет юзера с сервера
         return fetch(this._url + userUrl, {
             method: "GET",
             headers: this._headers
@@ -65,7 +64,7 @@ export class Api {
           });
     }
 
-    setUserInfo(userUrl, data) {  // закинет юзера на сервер
+    setUserInfo(data) {  // закинет юзера на сервер
         return fetch(this._url + userUrl, {
             method: "PATCH",
             headers: this._headers,
@@ -84,8 +83,8 @@ export class Api {
           });
     }
 
-    setAvatar(avatarURL, data) {  // закинет юзера на сервер
-      return fetch(this._url + avatarURL, {
+    setAvatar(data) {  // закинет юзера на сервер
+      return fetch(this._url + avatarUrl, {
           method: "PATCH",
           headers: this._headers,
           body: JSON.stringify(
@@ -108,7 +107,7 @@ export class Api {
     //------------- работа с лайками
 
     setLikeToServer(cardId) {   
-      return fetch(this._url + likes + cardId, {
+      return fetch(this._url + likesUrl + cardId, {
         method: "PUT",
         headers: this._headers
       })
@@ -124,7 +123,7 @@ export class Api {
     }
 
     removeLikeFromServer(cardId) {   
-      return fetch(this._url + likes + cardId, {
+      return fetch(this._url + likesUrl + cardId, {
         method: "DELETE",
         headers: this._headers
       })
@@ -138,6 +137,4 @@ export class Api {
         console.log(err);
       });
     }
-
-    // другие методы работы с API
 }

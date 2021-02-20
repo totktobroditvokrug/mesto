@@ -45,3 +45,10 @@ export const elementsForValidation = {
     formIsActive: 'popup_on'
 };
 
+// константы для работы с сервером
+export const myServerId = "f87caedede5ba1f17713b304";
+export const userUrl = 'users/me';
+export const cardUrl = 'cards';
+export const avatarUrl = userUrl + '/avatar';
+export const likesUrl = 'cards/likes/';  // адрес карточки без idCard
+

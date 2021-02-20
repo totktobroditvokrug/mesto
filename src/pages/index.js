@@ -7,11 +7,11 @@ import Section  from '../components/Section.js'
 import { PopupWithImage } from '../components/PopupWithImage.js'
 import { PopupWithForm } from '../components/PopupWithForm.js'
 import { FormValidator } from '../components/FormValidator.js'
- import { initialCards } from '../utils/constants.js'
 import { elementsForValidation } from '../utils/constants.js'
 import { UserInfo } from '../components/UserInfo.js'
 import { Api } from '../components/Api.js'
 import { Popup } from '../components/Popup.js'
+import { myServerId } from '../utils/constants.js'
 
 //---------------- popup добавления места ----------------
 const buttonOpenPopupAddPlace = document.querySelector('.button_type_add');
@@ -69,7 +69,7 @@ function deleteCardOnServer(cardId, evt) { // вызовем функции ап
   
   function apiDelCard() {
         document.removeEventListener('keydown', handleEnter);
-      api.deleteCard(cardId, cardUrl)
+      api.deleteCard(cardId)
       confirmDel.closePopup();
       evt.target.closest('.card').remove();
   }
@@ -94,13 +94,9 @@ confirmDel.setEventListeners();
 
 //----------------- работа с API ----------------
 // адреса для API (перенести в константы и экспортировать в кард и индекс)
-const myServerId = "f87caedede5ba1f17713b304";  // мой идентификатор
 
 const baseUrl = 'https://mesto.nomoreparties.co/v1/cohort-20/';
 
-const userUrl = 'users/me';
-const cardUrl = 'cards';
-const avatarURL = userUrl + '/avatar';
 
 export const api = new Api({
   baseUrl: baseUrl,
@@ -124,7 +120,7 @@ const cardsListServer = new Section({ // отрисовка массива initi
 },
 '.cards'
 );
-const cardsFromServer =  api.getInitialCards(cardUrl);
+const cardsFromServer =  api.getInitialCards();
 cardsFromServer
   .then((result) => {
  // console.log(result);
@@ -162,7 +158,7 @@ function handleNewCard(newPlaceData) {  // отрисовка формы нов�
   // вытащить из newPlaceData линк и имя и залить в итемс formNewCard
     buttonAddPlace.textContent = 'Сохранение...';  // UX
 //  const cardNewElement = createCard({ name: newPlaceData["place-name"], link: newPlaceData["place-link"] });
-  const cardToServer = api.setNewCard(cardUrl, { name: newPlaceData["place-name"], link: newPlaceData["place-link"] });
+  const cardToServer = api.setNewCard({ name: newPlaceData["place-name"], link: newPlaceData["place-link"] });
   cardToServer
   .then((data) => {
     console.log('новая карточка успешно отправлена');
@@ -196,7 +192,7 @@ const userForm = new PopupWithForm ('#user-information', (userData) => {  // с�
     buttonSubmitUser.textContent = 'Сохранение...';  // UX
     const newName = userData["user-name"];
     const newJob =  userData["user-job"];
-    api.setUserInfo(userUrl, {
+    api.setUserInfo({
       name: newName,
       about: newJob
     } // отправить данные на сервер
@@ -229,7 +225,7 @@ buttonOpenPopupProfile.addEventListener('click', () => {
 
 //-------------- работа сервера с данными юзера -----------------------
 
-const userInfoFromServer =  api.getUserInfo(userUrl);
+const userInfoFromServer =  api.getUserInfo();
 userInfoFromServer
 .then((user) => {
   console.log(user);
@@ -243,7 +239,7 @@ userInfoFromServer
 const editAvatar = new PopupWithForm('#avatar-form', (user) => {  // => колбэк сабмита
   console.log(buttonSaveAvatar.textContent);
   buttonSaveAvatar.textContent = 'Сохранение...';  // UX
-  api.setAvatar(avatarURL, user["avatar-link"])
+  api.setAvatar(user["avatar-link"])
   .then(res => {
     console.log(`аватар обновлен: ${res}`);
     avatarOnProfile.src =  user["avatar-link"];
