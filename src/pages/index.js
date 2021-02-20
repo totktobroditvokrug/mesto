@@ -50,6 +50,12 @@ function createCard(item) {
     updateCardView: () => {
 
     },
+    removeLikeFromServer: (cardId) => {
+      return api.removeLikeFromServer(cardId);
+    },
+    setLikeToServer: (cardId) => {
+      return api.setLikeToServer(cardId);
+    },
   },
   '#add-card-template'
   );
@@ -62,7 +68,7 @@ function deleteCardOnServer(cardId, evt) { // вызовем функции ап
   confirmDel.openPopup();
   
   function apiDelCard() {
-      document.removeEventListener('keydown', handleEnter);
+        document.removeEventListener('keydown', handleEnter);
       api.deleteCard(cardId, cardUrl)
       confirmDel.closePopup();
       evt.target.closest('.card').remove();
@@ -104,6 +110,8 @@ export const api = new Api({
   }
 });
 
+
+//---------------- загрузка карточек с сервера ----------------
 const initialCardsServer = []; // массив для получения данных карточек с сервера {name: '', link:''}
 const cardsListServer = new Section({ // отрисовка массива initialCards
   items: initialCardsServer,
@@ -171,6 +179,14 @@ function handleNewCard(newPlaceData) {  // отрисовка формы нов�
 
 const placeForm = new PopupWithForm ('#place-add', handleNewCard);
 placeForm.setEventListeners();  // запустит handleFormSubmit при сабмите и закроется форма
+
+//----------------- работа с лайками ----------------
+
+function handleLikeOnServer(cardId, likes, evt) {
+  console.log(evt.target.tagName);
+  console.log(cardId);
+}
+
 
 //------------------ инициализация формы юзера ----------------------
 

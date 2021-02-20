@@ -1,7 +1,7 @@
 //---------------- карточки ООП -----------------
 import { api } from '../pages/index.js'
 export class Card {
-	constructor({ data, handleCardClick, deleteCardCallback, updateCardView}, cardSelector) {
+	constructor({ data, handleCardClick, deleteCardCallback, updateCardView, removeLikeFromServer, setLikeToServer}, cardSelector) {
     this._data = data;
     
 		this._text = data.name;
@@ -11,6 +11,8 @@ export class Card {
     this._userId = data.userId;    // идентификатор юзера
     this._handleCardClick = handleCardClick; // функция вызова просмотра карточки
     this._deleteCardCallback = deleteCardCallback;  // функция удаления карточки
+    this._removeLikeFromServer = removeLikeFromServer;
+    this._setLikeToServer = setLikeToServer;
     this._updateCardView = updateCardView;  // пригодится
 		this._cardSelector = cardSelector;
     this._dataPreview = {
@@ -28,6 +30,8 @@ export class Card {
     return cardElement;
     }
 
+
+    // убрать подмешивание класса
     _handlerLikeIcon = (evt) => {       // реакция на лайк внутри карточки
       const myServerId = "f87caedede5ba1f17713b304";
       const objectLike = evt.target.closest('.card').querySelector('.counter');
@@ -45,7 +49,7 @@ export class Card {
     
              if (cardIsLike) {  // если стоял лайк юзера, снимаем его
               evt.target.classList.remove('card__like_active');
-              api.removeLikeFromServer(this._cardId)  // запрос на сервер по идентификатору карточки
+              this._removeLikeFromServer(this._cardId)  // запрос на сервер по идентификатору карточки
               .then((result) => {
                  this._likes = result.likes;  // обновить состояние карточек
                  console.log('лайк снят');
@@ -58,7 +62,7 @@ export class Card {
             }
             else {                    // если лайка не было, ставим
               evt.target.classList.add('card__like_active');
-              api.setLikeToServer(this._cardId)
+              this._setLikeToServer(this._cardId)
               .then((result) => {
                 this._likes = result.likes;  // обновить состояние карточек
                 console.log('лайк поставлен');
