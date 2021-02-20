@@ -228,11 +228,9 @@ userInfoFromServer
 });
 
 const editAvatar = new PopupWithForm('#avatar-form', (user) => {  // => колбэк сабмита
-  console.log(buttonSaveAvatar.textContent);
   buttonSaveAvatar.textContent = 'Сохранение...';  // UX
   api.setAvatar(user["avatar-link"])
   .then(res => {
-    console.log(`аватар обновлен: ${res}`);
     avatarOnProfile.src =  user["avatar-link"];
     editAvatar.closePopup();
   })
