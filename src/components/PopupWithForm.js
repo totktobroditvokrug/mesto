@@ -1,8 +1,10 @@
 import { Popup } from './Popup.js'
+
 export class PopupWithForm extends Popup {
-    constructor(popupSelector, handleFormSubmit) {
+    constructor(popupSelector, handleFormSubmit ) {
       super(popupSelector);
       this._handleFormSubmit = handleFormSubmit;
+     // this._handleResetError = handleResetError;
       this._form = this._popup.querySelector('.popup__container');
       this._inputList = this._form.querySelectorAll('.popup__input');
     }
@@ -25,7 +27,7 @@ export class PopupWithForm extends Popup {
     }
   
     closePopup() {
-      this._popup.reset();
+      this._popup.reset();  // эта строчка сброса ошибок не работала из-за неверно обЪявленного родителя
       super.closePopup();
     }
   }

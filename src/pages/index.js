@@ -1,4 +1,4 @@
-import './index.css';  // расскоментировать для вебпака
+// import './index.css';  // расскоментировать для вебпака
 
 
 // ---------------  импорт модулей  -----------------
@@ -51,10 +51,32 @@ function createCard(item) {
 
     },
     removeLikeFromServer: (cardId) => {
-      return api.removeLikeFromServer(cardId);
+      return (
+        api.removeLikeFromServer(cardId)
+          .then(res => {
+            if (res.ok) {
+              return res.json();
+            }
+            return Promise.reject(`Ошибка снятия лайка: ${res.status}`);
+          })
+          .catch((err) => {
+            console.log(err);
+          })
+      );
     },
     setLikeToServer: (cardId) => {
-      return api.setLikeToServer(cardId);
+      return (
+        api.setLikeToServer(cardId)
+        .then(res => {
+          if (res.ok) {
+            return res.json();
+          }
+          return Promise.reject(`Ошибка записи лайка: ${res.status}`);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+      );
     },
   },
   '#add-card-template'
@@ -65,13 +87,22 @@ function createCard(item) {
 
 function deleteCardOnServer(cardId, evt) { // вызовем функции апи, передадим ид карточки
   console.log('удаление карточки');
+  
+  buttonConfirm.textContent = 'Да';  // снять значение UX и записать стандартное
   confirmDel.openPopup();
   
   function apiDelCard() {
-        document.removeEventListener('keydown', handleEnter);
+      document.removeEventListener('keydown', handleEnter); // возможно повторное удаление мышкой с ошибками сервера
+      buttonConfirm.textContent = 'Удаляем...';  // UX
       api.deleteCard(cardId)
-      confirmDel.closePopup();
-      evt.target.closest('.card').remove();
+      .then(() => {
+          confirmDel.closePopup();
+          evt.target.closest('.card').remove();
+      })
+      .catch((err) => {
+        console.log(err);
+        confirmDel.closePopup(); // закрыть форму удаления, при необходимости загрузить обработчик ошибки
+      });
   }
 
   // ожидание клика по кнопке подтверждений или Enter для удаления карточки
@@ -115,11 +146,12 @@ const cardsListServer = new Section({ // отрисовка массива initi
 },
 '.cards'
 );
-const cardsFromServer =  api.getInitialCards();
-cardsFromServer
-  .then((result) => {
- // console.log(result);
 
+//-------------- загрузим одним промисом данные юзера и потом сформируем карточки
+Promise.all([api.getUserInfo(), api.getInitialCards()])
+  .then(([user, result]) => {
+    userInfo.setUserInfo({ newElementJob: user.about, newElementName: user.name }) // положить на страницу
+    avatarOnProfile.src =  user.avatar;
     console.log('Загрузка картинок с сервера: успешно');
     for(let i=0; i < result.length; i++) {
       initialCardsServer[i] = {
@@ -130,12 +162,11 @@ cardsFromServer
         userId: result[i].owner._id,  // идентификатор автора карточки
       }
     }
-   // console.log(initialCardsServer);
    cardsListServer.renderItems(); // вызывает renderer
   })
   .catch((err) => {
-    console.log(err);
-});
+  console.log(err);
+  });
 
 //--------------- форма создания карточки ---------------
 const imageForm = new PopupWithImage ('#view-image'); 
@@ -153,19 +184,18 @@ function handleNewCard(newPlaceData) {  // отрисовка формы нов�
   // вытащить из newPlaceData линк и имя и залить в итемс formNewCard
     buttonAddPlace.textContent = 'Сохранение...';  // UX
 //  const cardNewElement = createCard({ name: newPlaceData["place-name"], link: newPlaceData["place-link"] });
-  const cardToServer = api.setNewCard({ name: newPlaceData["place-name"], link: newPlaceData["place-link"] });
-  cardToServer
-  .then((data) => {
-    console.log('новая карточка успешно отправлена');
-    data.cardId = data._id;
-    data.userId = myServerId;
-    const cardNewElement = createCard(data);
-    cardsListServer.addItemPrepend(cardNewElement);
-    placeForm.closePopup();
-   })
-  .catch((err) => {
-     console.log(err);
-   });
+  api.setNewCard({ name: newPlaceData["place-name"], link: newPlaceData["place-link"] })
+    .then((data) => {
+      console.log('новая карточка успешно отправлена');
+      data.cardId = data._id;
+      data.userId = myServerId;
+      const cardNewElement = createCard(data);
+      cardsListServer.addItemPrepend(cardNewElement);
+      placeForm.closePopup();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 const placeForm = new PopupWithForm ('#place-add', handleNewCard);
@@ -178,9 +208,12 @@ function handleLikeOnServer(cardId, likes, evt) {
 }
 
 //------------------ инициализация формы юзера ----------------------
+// const formUserValidation = new FormValidator (elementsForValidation, profileFormElement);
+// formUserValidation.enableValidation();  // валидация формы
+
 const userInfo = new UserInfo (jobProfile, nameProfile);  // элементы для данных пользователя
 
-const userForm = new PopupWithForm ('#user-information', (userData) => {  // считываем данные из формы при отправке
+const userForm = new PopupWithForm ('#user-information',  (userData) => {  // считываем данные из формы при отправке
     buttonSubmitUser.textContent = 'Сохранение...';  // UX
     const newName = userData["user-name"];
     const newJob =  userData["user-job"];
@@ -191,15 +224,16 @@ const userForm = new PopupWithForm ('#user-information', (userData) => {  // с�
     )
       .then((data) => {
         buttonSubmitUser.textContent = 'Сохранить';  // UX
-        console.log(data);
         userForm.closePopup();
+        
        })
       .catch((err) => {
          console.log(err);
          buttonSubmitUser.textContent = 'Сохранить еще раз';  // UX
        });
+
     userInfo.setUserInfo({ newElementJob: newJob, newElementName: newName })
-  });
+});
 userForm.setEventListeners();  // после сабмита вызовет колбэк записи новых данных и закроется
 
 buttonOpenPopupProfile.addEventListener('click', () => {
@@ -215,29 +249,18 @@ buttonOpenPopupProfile.addEventListener('click', () => {
    buttonSubmitUser.disabled = true;
 });
 
-//-------------- работа сервера с данными юзера -----------------------
-const userInfoFromServer =  api.getUserInfo();
-userInfoFromServer
-.then((user) => {
-  console.log(user);
-  userInfo.setUserInfo({ newElementJob: user.about, newElementName: user.name }) // положить на страницу
-  avatarOnProfile.src =  user.avatar;
-})
-.catch((err) => {
-  console.log(err);
-});
 
 const editAvatar = new PopupWithForm('#avatar-form', (user) => {  // => колбэк сабмита
   buttonSaveAvatar.textContent = 'Сохранение...';  // UX
   api.setAvatar(user["avatar-link"])
-  .then(res => {
-    avatarOnProfile.src =  user["avatar-link"];
-    editAvatar.closePopup();
-  })
-  .catch((err) => {
-    console.log(err);
-    buttonSaveAvatar.textContent = 'Создать еще раз';  // UX при ошибке обновления
-  });
+    .then(() => {
+      avatarOnProfile.src =  user["avatar-link"];
+      editAvatar.closePopup();
+    })
+    .catch((err) => {
+      console.log(err);
+      buttonSaveAvatar.textContent = 'Создать еще раз';  // UX при ошибке обновления
+    });
 });
 editAvatar.setEventListeners();
 editAvatarPen.addEventListener('click', () => {
@@ -250,6 +273,6 @@ editAvatarPen.addEventListener('click', () => {
 //--------------- валидация ------------------
 const formElements = Array.from(document.querySelectorAll(elementsForValidation.formSelector));  // создаем массив форм
 formElements.forEach(form => {
- const formElement = new FormValidator (elementsForValidation, form);
+const formElement = new FormValidator (elementsForValidation, form);
  formElement.enableValidation();  // передаем на валидацию объект со стилями формы
 });
