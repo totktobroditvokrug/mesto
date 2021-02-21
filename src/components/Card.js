@@ -1,7 +1,7 @@
 //---------------- карточки ООП -----------------
 import { myServerId, userUrl, cardUrl, avatarUrl } from '../utils/constants.js'
 export class Card {
-	constructor({ data, handleCardClick, deleteCardCallback, updateCardView, removeLikeFromServer, setLikeToServer}, cardSelector) {
+	constructor({ data, handleCardClick, deleteCardCallback, updateCardView, handlerLikeIcon}, cardSelector) {
     this._data = data;
     
 		this._text = data.name;
@@ -14,6 +14,7 @@ export class Card {
     this._removeLikeFromServer = removeLikeFromServer;
     this._setLikeToServer = setLikeToServer;
     this._updateCardView = updateCardView;  // пригодится
+    this.__handlerLikeIcon = handlerLikeIcon;
 		this._cardSelector = cardSelector;
     this._dataPreview = {
       link: this._image,
@@ -30,48 +31,6 @@ export class Card {
     return cardElement;
     }
 
-    _handlerLikeIcon = (evt) => {       // реакция на лайк внутри карточки
-      const objectLike = evt.target.closest('.card').querySelector('.counter');
-      let cardIsLike = false; // ставим первоначально отсутствие лайка
-            cardIsLike = false;  // считаем, что нет лайка от юзера
-            this._likes.forEach((item) => {  // ищем в массиве лайк от юзера
-              if (item._id === myServerId) {
-                console.log('это лайк юзера');
-                cardIsLike = true;
-              }
-              else {
-                console.log('тут нет лайка юзера');
-              }
-            });
-    
-             if (cardIsLike) {  // если стоял лайк юзера, снимаем его
-              evt.target.classList.remove('card__like_active');
-              this._removeLikeFromServer(this._cardId)  // запрос на сервер по идентификатору карточки
-              .then((result) => {
-                 this._likes = result.likes;  // обновить состояние карточек
-                 console.log('лайк снят');
-                 objectLike.textContent = result.likes.length;
-              })
-              .catch((err) => {
-                  console.log('лайк не снялся');
-                  console.log(err);
-                }); 
-            }
-            else {                    // если лайка не было, ставим
-              evt.target.classList.add('card__like_active');
-              this._setLikeToServer(this._cardId)
-              .then((result) => {
-                this._likes = result.likes;  // обновить состояние карточек
-                console.log('лайк поставлен');
-                objectLike.textContent = result.likes.length;
-              })
-              .catch((err) => {
-                console.log('лайк не залетел');
-                console.log(err);
-              })
-            }
-    }
-
     _handleDeleteCard = (evt) => {
       this._deleteCardCallback(this._cardId, evt);
     }
@@ -84,7 +43,7 @@ export class Card {
         else {
           this._element.querySelector('.button').classList.add('button_type_no-trash');
         }
-        this._element.querySelector('.button_type_like').addEventListener('click', this._handlerLikeIcon);
+        this._element.querySelector('.button_type_like').addEventListener('click', this._handlerLikeIcon(this._cardId, this._likes, evt));
   
         this._element.querySelector('.card__image').addEventListener('click', () => {
           this._handleCardClick(this._dataPreview);

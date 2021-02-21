@@ -111,7 +111,7 @@ export class Api {
     }
 
     updateCardView(cardId) {
-      return fetch(this._url + cardUrl + '/' + cardId, {
+      return fetch(this._url + likesUrl + cardId, {
         method: "PATCH",
         headers: this._headers
       })
@@ -119,7 +119,7 @@ export class Api {
         if (res.ok) {
           return res.json();
         }
-        return Promise.reject(`Ошибка обновления карточки: ${res.status}`);
+        return Promise.reject(`Ошибка обновления лайка: ${res.status}`);
       });
     }
 }
