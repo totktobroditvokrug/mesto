@@ -109,4 +109,17 @@ export class Api {
         headers: this._headers
       })
     }
+
+    updateCardView(cardId) {
+      return fetch(this._url + cardUrl + '/' + cardId, {
+        method: "PATCH",
+        headers: this._headers
+      })
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Ошибка обновления карточки: ${res.status}`);
+      });
+    }
 }

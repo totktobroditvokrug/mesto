@@ -55,6 +55,10 @@ function createCard(item) {
         api.removeLikeFromServer(cardId)
           .then(res => {
             if (res.ok) {
+              api.updateCardView(cardId)
+              .then(res => {
+                console.log(res);
+              })
               return res.json();
             }
             return Promise.reject(`Ошибка снятия лайка: ${res.status}`);

@@ -9,11 +9,11 @@ export class Card {
     this._likes = data.likes;
     this._cardId = data.cardId; // идентификатор изображения с сервера
     this._userId = data.userId;    // идентификатор юзера
-    this.handleCardClick = handleCardClick; // функция вызова просмотра карточки
-    this.deleteCardCallback = deleteCardCallback;  // функция удаления карточки
-    this.removeLikeFromServer = removeLikeFromServer;
-    this.setLikeToServer = setLikeToServer;
-    this.updateCardView = updateCardView;  // пригодится
+    this._handleCardClick = handleCardClick; // функция вызова просмотра карточки
+    this._deleteCardCallback = deleteCardCallback;  // функция удаления карточки
+    this._removeLikeFromServer = removeLikeFromServer;
+    this._setLikeToServer = setLikeToServer;
+    this._updateCardView = updateCardView;  // пригодится
 		this._cardSelector = cardSelector;
     this._dataPreview = {
       link: this._image,
@@ -46,7 +46,7 @@ export class Card {
     
              if (cardIsLike) {  // если стоял лайк юзера, снимаем его
               evt.target.classList.remove('card__like_active');
-              this.removeLikeFromServer(this._cardId)  // запрос на сервер по идентификатору карточки
+              this._removeLikeFromServer(this._cardId)  // запрос на сервер по идентификатору карточки
               .then((result) => {
                  this._likes = result.likes;  // обновить состояние карточек
                  console.log('лайк снят');
@@ -59,7 +59,7 @@ export class Card {
             }
             else {                    // если лайка не было, ставим
               evt.target.classList.add('card__like_active');
-              this.setLikeToServer(this._cardId)
+              this._setLikeToServer(this._cardId)
               .then((result) => {
                 this._likes = result.likes;  // обновить состояние карточек
                 console.log('лайк поставлен');
@@ -73,7 +73,7 @@ export class Card {
     }
 
     _handleDeleteCard = (evt) => {
-      this.deleteCardCallback(this._cardId, evt);
+      this._deleteCardCallback(this._cardId, evt);
     }
  
     _setEventListeners() {  // слушатели кнопок
@@ -87,7 +87,7 @@ export class Card {
         this._element.querySelector('.button_type_like').addEventListener('click', this._handlerLikeIcon);
   
         this._element.querySelector('.card__image').addEventListener('click', () => {
-          this.handleCardClick(this._dataPreview);
+          this._handleCardClick(this._dataPreview);
         });
     }
    
