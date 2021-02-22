@@ -1,4 +1,4 @@
-// import './index.css';  // расскоментировать для вебпака
+ import './index.css';  // расскоментировать для вебпака
 
 
 // ---------------  импорт модулей  -----------------
@@ -50,14 +50,13 @@ function createCard(item) {
     updateCardView: () => {
 
     },
-    handlerLikeIcon: (cardId, likes,  evt) => {
+    handlerLikeIcon: (cardId, likes, objectLike, buttonLike, refreshLikes) => {
             // реакция на лайк внутри карточки
-        console.log('мои данные до обработки');
-        console.log(this._likes);
-        const objectLike = evt.target.closest('.card').querySelector('.counter');
+        // console.log('мои данные до обработки');
+        // console.log(objectLike);
         let cardIsLike = false; // ставим первоначально отсутствие лайка
               cardIsLike = false;  // считаем, что нет лайка от юзера
-              this._likes.forEach((item) => {  // ищем в массиве лайк от юзера
+              likes.forEach((item) => {  // ищем в массиве лайк от юзера
                 if (item._id === myServerId) {
                   console.log('это лайк юзера');
                   cardIsLike = true;
@@ -67,7 +66,7 @@ function createCard(item) {
                 }
               });
                if (cardIsLike) {  // если стоял лайк юзера, снимаем его
-                evt.target.classList.remove('card__like_active');
+               buttonLike.classList.remove('card__like_active');  // снимем сразу, в catch исправим если ошибка
                 api.removeLikeFromServer(cardId)
                 .then(res => {
                   if (res.ok) {
@@ -76,44 +75,48 @@ function createCard(item) {
                   return Promise.reject(`Ошибка снятия лайка: ${res.status}`);
                 })
                 .then((result) => {
+                   
                    likes = result.likes;  // обновить состояние карточек
-                    console.log('лайк снят');
-                    console.log(result.likes);
+                   refreshLikes(likes);
+                    // console.log('лайк снят');
+                    // console.log(result.likes);
                     objectLike.textContent = result.likes.length;
-        //            api.updateCardView(cardId);
                   })
                 .catch((err) => {
+                 buttonLike.classList.add('card__like_active');   // если лайк на сервере не снялся
                  console.log('лайк не снялся');
                  console.log(err);
                })
               }
               else {                    // если лайка не было, ставим
-                evt.target.classList.add('card__like_active');
+                buttonLike.classList.add('card__like_active');  // ставим сразу, в catch исправим если ошибка
                 api.setLikeToServer(cardId)
-        .then(res => {
-          if (res.ok) {
-            return res.json();
-          }
-          return Promise.reject(`Ошибка записи лайка: ${res.status}`);
-        })
-        .then((result) => {
-          likes = result.likes;  // обновить состояние карточек
-          console.log('лайк поставлен');
-          console.log(result.likes);
-          objectLike.textContent = result.likes.length;
-         })
-        .catch((err) => {
-          console.log('лайк не залетел');
-          console.log(err);
-        })  // колбэки  на АПИ
-  
-               }
-               console.log('мои данные после обработки');
-               console.log(this._likes);
-
-  //    console.log(likes);
+                .then(res => {
+                  if (res.ok) {
+                    return res.json();
+                  }
+                  return Promise.reject(`Ошибка записи лайка: ${res.status}`);
+                })
+                .then((result) => { 
+                  
+                  likes = result.likes;  // обновить состояние карточек
+                  refreshLikes(likes);
+                  // console.log('лайк поставлен');
+                  // console.log(result.likes);
+                  objectLike.textContent = result.likes.length;
+                })
+                .catch((err) => {
+                  buttonLike.classList.remove('card__like_active');  // снять ошибочно поставленный
+                  console.log('лайк не залетел');
+                  console.log(err);
+                })
               }
+  
 
+    }
+  },
+  '#add-card-template'
+);
 
   const cardElement = card.generateCard(myServerId);
   return cardElement;

@@ -11,10 +11,8 @@ export class Card {
     this._userId = data.userId;    // идентификатор юзера
     this._handleCardClick = handleCardClick; // функция вызова просмотра карточки
     this._deleteCardCallback = deleteCardCallback;  // функция удаления карточки
-    this._removeLikeFromServer = removeLikeFromServer;
-    this._setLikeToServer = setLikeToServer;
     this._updateCardView = updateCardView;  // пригодится
-    this.__handlerLikeIcon = handlerLikeIcon;
+    this._handlerLikeIcon = handlerLikeIcon;
 		this._cardSelector = cardSelector;
     this._dataPreview = {
       link: this._image,
@@ -31,11 +29,18 @@ export class Card {
     return cardElement;
     }
 
+    _refreshLikes = (newLikes) => {  // вызов колбэка в колбэке дожидающегося ответа сервера с новыми лайками
+      this._likes = newLikes;
+    }
+
     _handleDeleteCard = (evt) => {
       this._deleteCardCallback(this._cardId, evt);
     }
  
     _setEventListeners() {  // слушатели кнопок
+      this._likeButton = this._element.querySelector('.button_type_like');
+      this._likeCounter = this._element.querySelector('.counter');
+
         if (this._userId === myServerId) {
     //      console.log('это моя карточка, ставлю слушатель удаления');
           this._element.querySelector('.button_type_trash').addEventListener('click', this._handleDeleteCard);
@@ -43,13 +48,24 @@ export class Card {
         else {
           this._element.querySelector('.button').classList.add('button_type_no-trash');
         }
-        this._element.querySelector('.button_type_like').addEventListener('click', this._handlerLikeIcon(this._cardId, this._likes, evt));
+
+        this._element.querySelector('.button_type_like').addEventListener('click', () => {
+          this._handlerLikeIcon(
+            this._cardId, this._likes, this._likeCounter,  this._likeButton, this._refreshLikes
+          )    
+        }
+   
+       );  // вызвать колбэк в идексе
   
         this._element.querySelector('.card__image').addEventListener('click', () => {
           this._handleCardClick(this._dataPreview);
         });
     }
    
+
+
+
+
     _loadLike(element, myServerId) {
       element.querySelector('.counter').textContent = this._likes.length;
       let cardIsLike = false; // ставим первоначально отсутствие лайка  
