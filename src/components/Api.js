@@ -1,4 +1,4 @@
-import { myServerId, userUrl, cardUrl, avatarUrl, likesUrl } from '../utils/constants.js'
+import { userUrl, cardUrl, avatarUrl, likesUrl } from '../utils/constants.js'
 
 export class Api {
     constructor(config) {

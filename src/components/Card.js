@@ -1,7 +1,8 @@
 //---------------- карточки ООП -----------------
-import { myServerId, userUrl, cardUrl, avatarUrl } from '../utils/constants.js'
+import { userUrl, cardUrl, avatarUrl } from '../utils/constants.js'
 export class Card {
-	constructor({ data, handleCardClick, deleteCardCallback, updateCardView, handlerLikeIcon}, cardSelector) {
+	constructor({ data, myServerId, handleCardClick, deleteCardCallback, updateCardView, handlerLikeIcon}, cardSelector) {
+    this._myServerId = myServerId;
     this._data = data;
     
 		this._text = data.name;
@@ -41,7 +42,7 @@ export class Card {
       this._likeButton = this._element.querySelector('.button_type_like');
       this._likeCounter = this._element.querySelector('.counter');
 
-        if (this._userId === myServerId) {
+        if (this._userId === this._myServerId) {
     //      console.log('это моя карточка, ставлю слушатель удаления');
           this._element.querySelector('.button_type_trash').addEventListener('click', this._handleDeleteCard);
         }

@@ -1,4 +1,4 @@
- import './index.css';  // расскоментировать для вебпака
+// import './index.css';  // расскоментировать для вебпака
 
 
 // ---------------  импорт модулей  -----------------
@@ -11,7 +11,7 @@ import { elementsForValidation } from '../utils/constants.js'
 import { UserInfo } from '../components/UserInfo.js'
 import { Api } from '../components/Api.js'
 import { Popup } from '../components/Popup.js'
-import { myServerId, baseUrl } from '../utils/constants.js'
+import { baseUrl } from '../utils/constants.js'
 
 //---------------- popup добавления места ----------------
 const buttonOpenPopupAddPlace = document.querySelector('.button_type_add');
@@ -40,7 +40,8 @@ const avatarOnProfile = document.querySelector('.profile__avatar');  // ават
 //--------------- инструменты для карточек -------------------
 function createCard(item) {
   const card = new Card ({  
-    data: item, 
+    data: item,
+    myServerId: userId,
     handleCardClick: (previewData) => { // просмотрщик изображения карточки
       imageForm.openPopup(previewData);
     },
@@ -57,7 +58,7 @@ function createCard(item) {
         let cardIsLike = false; // ставим первоначально отсутствие лайка
               cardIsLike = false;  // считаем, что нет лайка от юзера
               likes.forEach((item) => {  // ищем в массиве лайк от юзера
-                if (item._id === myServerId) {
+                if (item._id === userId) {
                   console.log('это лайк юзера');
                   cardIsLike = true;
                 }
@@ -118,7 +119,7 @@ function createCard(item) {
   '#add-card-template'
 );
 
-  const cardElement = card.generateCard(myServerId);
+  const cardElement = card.generateCard(userId);
   return cardElement;
 }
 
@@ -185,11 +186,13 @@ const cardsListServer = new Section({ // отрисовка массива initi
 );
 
 //-------------- загрузим одним промисом данные юзера и потом сформируем карточки
+let userId = null;
 Promise.all([api.getUserInfo(), api.getInitialCards()])
   .then(([user, result]) => {
     userInfo.setUserInfo({ newElementJob: user.about, newElementName: user.name }) // положить на страницу
     avatarOnProfile.src =  user.avatar;
-    console.log('Загрузка картинок с сервера: успешно');
+    userId = user._id;
+    console.log(userId);
     for(let i=0; i < result.length; i++) {
       initialCardsServer[i] = {
         name: result[i].name,
@@ -225,7 +228,7 @@ function handleNewCard(newPlaceData) {  // отрисовка формы нов�
     .then((data) => {
       console.log('новая карточка успешно отправлена');
       data.cardId = data._id;
-      data.userId = myServerId;
+      data.userId = userId;
       const cardNewElement = createCard(data);
       cardsListServer.addItemPrepend(cardNewElement);
       placeForm.closePopup();
